@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Blog Categories for Groups
  * Author: Brajesh Singh
- * Plugin URI:http://buddydev.com/downloads/plugins/
+ * Plugin URI:http://buddydev.com/plugins/blog-categories-for-groups/
  * Author URI:http://buddydev.com/members/sbrajesh
  * Description: Allow Group admins;/mods to associate blog categories with groups
  * Version: 1.0.3
@@ -39,7 +39,7 @@ if(bcg_is_single_post ())
 
    }
 
-   
+
 //allow translations
 function bcg_load_textdomain() {
         $locale = apply_filters( 'bcg_load_textdomain_get_locale', get_locale() );
@@ -82,9 +82,9 @@ function bcg_screen_group_blog_single_post(){
    //if the group is private/hidden and user is not member, return
    if(($bp->groups->current_group->status=='private'||$bp->groups->current_group->status=='hidden')&&(!is_user_logged_in()||!groups_is_user_member( $bp->loggedin_user->id, $bp->groups->current_group->id )))
    return;//avoid prioivacy troubles
-   
+
    if ( $bp->current_component == $bp->groups->slug && $bp->current_action==BCG_SLUG &&!empty($bp->action_variables[0]) ){
-     
+
        $wpq=new WP_Query(bcg_get_query());
         if($wpq->have_posts()){
             //load template
@@ -123,7 +123,7 @@ if(is_array($cat_ids)){////it is sure but do not take risk
 }
   else{
       ?>
-  
+
     <div class="error">
         <p><?php _e("Please create the categories first to attach them to a group.","bcg");?></p>
     </div>
@@ -258,7 +258,7 @@ add_action("bp_before_group_settings_admin","bcg_group_disable_form");
 add_action("bp_before_group_settings_creation_step","bcg_group_disable_form");
 //check if the group yt is enabled
 function bcg_group_disable_form(){?>
-   
+
     <div class="checkbox">
 	<label><input type="checkbox" name="group-disable-bcg" id="group-disable-bcg" value="1" <?php if(bcg_is_disabled_for_group()):?> checked="checked"<?php endif;?>/> <?php _e( 'Disable Blog Categories', 'bcg' ) ?></label>
     </div>
@@ -281,7 +281,7 @@ function bcg_is_disabled_for_group(){
         $group_id=$_COOKIE['bp_new_group_id'];
    else if(bp_is_group ())
         $group_id=$bp->groups->current_group->id;
-    
+
     return apply_filters("bcg_is_disabled_for_group",bcg_is_disabled($group_id));
 }
 ?>
