@@ -8,7 +8,7 @@ var $enable_create_step = true; // enable create step
 var $enable_nav_item = false; //do not show in front end
 var $enable_edit_item = true; // If your extensi
 	function bcg_group_extension() {
-		$this->name = 'Blog Categories';
+		$this->name = __('Blog Categories','bcg');
 		$this->slug = 'blog-categories';
 
 		$this->create_step_position = 21;
@@ -44,7 +44,7 @@ var $enable_edit_item = true; // If your extensi
 <?php
                     bcg_admin_form();
 
-	
+
 		wp_nonce_field( 'groups_edit_save_' . $this->slug );
                 ?>
                 <p><input type="submit" value="<?php _e( 'Save Changes', 'bcg' ) ?> &rarr;" id="save" name="save" /></p>
@@ -56,10 +56,10 @@ var $enable_edit_item = true; // If your extensi
 
 		if ( !isset( $_POST['save'] ) )
 			return false;
-                        
+
 		check_admin_referer( 'groups_edit_save_' . $this->slug );
 
-		
+
                 $group_id=$bp->groups->current_group->id;
 		 $cats=$_POST["blog_cats"];
                          //print_r($cats);
@@ -76,7 +76,7 @@ var $enable_edit_item = true; // If your extensi
 		/* Use this function to display the actual content of your group extension when the nav item is selected */
 	}
 
-	function widget_display() { 
+	function widget_display() {
 	}
 }
 if(!bcg_is_disabled_for_group())
