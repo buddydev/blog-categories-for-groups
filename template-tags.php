@@ -1,7 +1,7 @@
 <?php
-/* 
+/*
  * Template Tags for Blog categories
- * 
+ *
  */
 
 //if inside the post loop
@@ -51,6 +51,7 @@ function bcg_fix_category_permalink($catlink, $category_id){
 
 //get post permalink which leads to group blog single post page
 function bcg_get_post_permalink($post){
+    global $bp;
       return bp_get_group_permalink($bp->groups->current_group).BCG_SLUG."/".$post->post_name;
 }
 function bcg_pagination($q) {
