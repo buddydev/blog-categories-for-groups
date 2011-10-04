@@ -201,6 +201,8 @@ function bcg_get_post_form($group_id){
     //for form
     $url=bp_get_group_permalink(new BP_Groups_Group($group_id)).BCG_SLUG."/create/";
     do_shortcode("[oqp_form taxonomies='category' taxonomies{category}{exclude}=".$cat_list." form_id=10101 form_url=$url ]");
+    do_action("bcg_post_form",$cats,$ul);//pass the categories as array and the url of the current page
+    
 }
 
 
