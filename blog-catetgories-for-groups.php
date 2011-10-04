@@ -64,7 +64,7 @@ function bcg_setup_nav($current_user_access){
       return;
     if(bcg_is_disabled($bp->groups->current_group->id))
           return;
-    $group_link = bp_get_group_permalink($bp->groups->current_group)."/";
+    $group_link = bp_get_group_permalink($bp->groups->current_group);
     bp_core_new_subnav_item( array( 'name' => __( 'Blog', 'bcg' ), 'slug' => BCG_SLUG, 'parent_url' => $group_link, 'parent_slug' => $bp->groups->current_group->slug, 'screen_function' => 'bcg_screen_group_blog', 'position' => 10,'user_has_access'=>$current_user_access, 'item_css_id' => 'blog' ) );
 
 }
