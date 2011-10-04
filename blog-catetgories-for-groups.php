@@ -59,10 +59,13 @@ add_action ( 'bp_init', 'bcg_load_textdomain', 2 );
 //setup nav
 function bcg_setup_nav($current_user_access){
     global $bp;
-  if(bcg_is_disabled($bp->groups->current_group->id))
+  
+  if(!bp_is_group())
+      return;
+    if(bcg_is_disabled($bp->groups->current_group->id))
           return;
-    $group_link = $bp->root_domain . '/' . $bp->groups->slug . '/' . $bp->groups->current_group->slug . '/';
-    bp_core_new_subnav_item( array( 'name' => __( 'Blog', 'bcg' ), 'slug' => BCG_SLUG, 'parent_url' => $group_link, 'parent_slug' => $bp->groups->slug, 'screen_function' => 'bcg_screen_group_blog', 'position' => 10,'user_has_access'=>$current_user_access, 'item_css_id' => 'blog' ) );
+    $group_link = bp_get_group_permalink($bp->groups->current_group)."/";
+    bp_core_new_subnav_item( array( 'name' => __( 'Blog', 'bcg' ), 'slug' => BCG_SLUG, 'parent_url' => $group_link, 'parent_slug' => $bp->groups->current_group->slug, 'screen_function' => 'bcg_screen_group_blog', 'position' => 10,'user_has_access'=>$current_user_access, 'item_css_id' => 'blog' ) );
 
 }
 add_action("groups_setup_nav","bcg_setup_nav");
@@ -77,6 +80,8 @@ function bcg_screen_group_blog(){
 //for single post screen
 function bcg_screen_group_blog_single_post(){
    global $bp;
+    if(!bp_is_group())
+      return;
    if(bcg_is_disabled($bp->groups->current_group->id))
            return;
    //if the group is private/hidden and user is not member, return
@@ -102,7 +107,7 @@ add_action("wp","bcg_screen_group_blog_single_post",5);
 function bcg_admin_form(){
     $group_id=bp_get_group_id();
 
-    echo "group Id".$group_id."preference".bcg_is_disabled_for_group()? "yes":"no";
+   
     $selected_cats=bcg_get_categories($group_id);
     echo "<p>".__("Check a category to assopciate the posts in this category with this group.","bcg")."</p>";
 
