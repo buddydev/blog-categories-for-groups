@@ -3,12 +3,12 @@
  * Plugin Name: Blog Categories for Groups
  * Author: Brajesh Singh
  * Plugin URI:http://buddydev.com/plugins/blog-categories-for-groups/
- * Author URI:http://buddydev.com/members/sbrajesh
+ * Author URI:http://buddydev.com/members/sbrajesh/
  * Description: Allow Group admins;/mods to associate blog categories with groups
- * Version: 1.0.3
- * Tested with wp 3.1+buddypress 1.2.8
+ * Version: 1.0.4
+ * Tested with wp 3.2.1+BuddyPress 1.5.1
  * License: GPL
- * Date: March 18, 2011
+ * Date: December 1, 2011
  */
 
 if(!defined('BCG_SLUG'))
@@ -64,6 +64,19 @@ function bcg_setup_nav($current_user_access){
       return;
     if(bcg_is_disabled($bp->groups->current_group->id))
           return;
+    //register form if the BPDev PostEditor Exists
+    if(function_exists('bp_new_simple_blog_post_form')){
+        $form_params=array('post_type'=>'post',
+                           'post_author'=>  bp_loggedin_user_id(),
+                           'post_status'=>'draft',
+                           'current_user_can_post'=>  bcg_current_user_can_post(),
+                           'show_categories'=>true,
+                           'show_tags'=>false,//current version does not support the tag
+                           'allowed_categories'=>bcg_get_categories($bp->groups->current_group->id),//selected cats,
+                           'allowed_tags'=>array());
+        $form=bp_new_simple_blog_post_form('bcg_form',$form_params);
+       
+    }   
     $group_link = bp_get_group_permalink($bp->groups->current_group);
     bp_core_new_subnav_item( array( 'name' => __( 'Blog', 'bcg' ), 'slug' => BCG_SLUG, 'parent_url' => $group_link, 'parent_slug' => $bp->groups->current_group->slug, 'screen_function' => 'bcg_screen_group_blog', 'position' => 10,'user_has_access'=>$current_user_access, 'item_css_id' => 'blog' ) );
 
@@ -200,6 +213,13 @@ function bcg_get_post_form($group_id){
 
     //for form
     $url=bp_get_group_permalink(new BP_Groups_Group($group_id)).BCG_SLUG."/create/";
+    if(function_exists('bp_get_simple_blog_post_form')){
+        
+       $form=bp_get_simple_blog_post_form('bcg_form');
+        if($form)
+            $form->show();
+        
+    }
     do_shortcode("[oqp_form taxonomies='category' taxonomies{category}{exclude}=".$cat_list." form_id=10101 form_url=$url ]");
     do_action("bcg_post_form",$cats,$ul);//pass the categories as array and the url of the current page
     
