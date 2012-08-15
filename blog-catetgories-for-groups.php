@@ -304,6 +304,7 @@ function bcg_save_group_prefs($group_id){
 
 function bcg_is_disabled_for_group(){
     global $bp;
+    $group_id=false;
     if (bp_is_group_create())
         $group_id=$_COOKIE['bp_new_group_id'];
    else if(bp_is_group ())

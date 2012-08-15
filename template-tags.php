@@ -8,19 +8,19 @@
 function in_bcg_loop(){
     global $bp;
 
-    return $bp->bcg->in_the_loop;
+    return isset($bp->bcg)? $bp->bcg->in_the_loop:false;
 }
 //use it to mark t5he start of bcg post loop
 function bcg_loop_start(){
     global $bp;
-
+     $bp->bcg=new stdClass();
     $bp->bcg->in_the_loop=true;
 }
 
 //use it to mark the end of bcg loop
 function bcg_loop_end(){
     global $bp;
-
+    
     $bp->bcg->in_the_loop=false;
 }
 
