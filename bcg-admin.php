@@ -7,7 +7,9 @@ var $visibility = 'public'; // 'public' will show your extension to non-group me
 var $enable_create_step = true; // enable create step
 var $enable_nav_item = false; //do not show in front end
 var $enable_edit_item = true; // If your extensi
-	function bcg_group_extension() {
+	function __construct() {
+        
+        
 		$this->name = __('Blog Categories','bcg');
 		$this->slug = 'blog-categories';
 

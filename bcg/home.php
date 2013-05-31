@@ -27,11 +27,11 @@
 			</div>
 			<?php
 			if(bcg_is_single_post())
-				locate_template( array( 'bcg/single-post.php' ), true );
+				bcg_load_template('bcg/single-post.php' );
 			else if(bcg_is_post_create())
-				locate_template( array( 'bcg/create.php' ), true );
+				bcg_load_template('bcg/create.php' );
 			else
-				locate_template( array( 'bcg/blog.php' ), true );
+				bcg_load_template( 'bcg/blog.php');
 			?>
 			</div>
 			
