@@ -82,6 +82,4 @@ var $enable_edit_item = true; // If your extensi
 	}
 }
 if(!bcg_is_disabled_for_group())
-bp_register_group_extension( 'BCG_Group_Extension' );
-
-?>
+    bp_register_group_extension( 'BCG_Group_Extension' );
