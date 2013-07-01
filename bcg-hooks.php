@@ -19,7 +19,7 @@ add_action('bp_before_group_settings_creation_step','bcg_group_disable_form');
 function bcg_group_disable_form(){?>
 
     <div class="checkbox">
-        <label><input type="checkbox" name="group-disable-bcg" id="group-disable-bcg" value="1" <?php if(bcg_is_disabled_for_group()):?> checked="checked"<?php endif;?>/> <?php _e( 'Disable Blog Categories', 'bcg' ) ?></label>
+        <label><input type="checkbox" name="group-disable-bcg" id="group-disable-bcg" value="1" <?php if(bcg_is_disabled_for_group()):?> checked="checked"<?php endif;?>/> <?php _e( 'Disable group blog.', 'bcg' ) ?></label>
     </div>
 <?php
 
