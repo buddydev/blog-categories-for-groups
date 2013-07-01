@@ -131,7 +131,7 @@ function bcg_admin_form(){
     $group_id=bp_get_group_id();
 
     $selected_cats=bcg_get_categories($group_id);
-    echo "<p>".__("Check a category to assopciate the posts in this category with this group.","bcg")."</p>";
+    echo "<p>".__("Select a category to associate its posts with this group.","bcg")."</p>";
 
     $cat_ids=get_all_category_ids();
     if(is_array($cat_ids)){////it is sure but do not take risk
@@ -152,7 +152,7 @@ function bcg_admin_form(){
       ?>
 
     <div class="error">
-        <p><?php _e("Please create the categories first to attach them to a group.","bcg");?></p>
+        <p><?php _e("Please create the categories before trying to attach them to a group.","bcg");?></p>
     </div>
 <?php
      }
@@ -170,7 +170,7 @@ function bcg_get_post_form($group_id){
     global $bp;
     $cat_selected=bcg_get_categories($group_id);//selected cats
     if(empty($cat_selected)){
-             _e('This group has no associated categories. To post to Group blog, you need to associate some categoris to it.','bcg');
+             _e('This group has no categories associated with it. To post to group blog, first associate one or more categories with it.','bcg');
             return;
         }
 

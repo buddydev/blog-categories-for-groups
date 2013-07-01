@@ -4,7 +4,7 @@
  * Author: Brajesh Singh
  * Plugin URI:http://buddydev.com/plugins/blog-categories-for-groups/
  * Author URI:http://buddydev.com/members/sbrajesh/
- * Description: Allow Group admins;/mods to associate blog categories with groups
+ * Description: Allow Group admins/mods to associate blog categories with groups
  * Version: 1.1
  * Tested with WordPress 3.5.1+BuddyPress 1.7.2
  * License: GPL
@@ -148,6 +148,7 @@ class BCG_View_Helper{
                 'post_author'=>  bp_loggedin_user_id(),
                 'post_status'=>'draft',
                 'current_user_can_post'=>  bcg_current_user_can_post(),
+                // 'upload_count' => 1, //Changing this enables file uploads on the form.
                 'tax'=>array(
                     'category'=>array(
                         'include'=>bcg_get_categories($group_id),//selected cats,
@@ -196,7 +197,7 @@ class BCG_View_Helper{
              bp_core_load_template( apply_filters( 'groups_template_group_blog_single_post', 'bcg/home' ) );
             }
         else
-            bp_core_add_message (__("Sorry, the post does not exists!","bcg"),"error");
+            bp_core_add_message (__("Sorry, the post does not exist.","bcg"),"error");
 
        }
     }
