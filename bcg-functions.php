@@ -52,10 +52,7 @@ function bcg_current_user_can_post(){
     if ( $user_id ) {
         switch ($level_to_post) {
             case 'member':
-                $can_post = ( groups_is_user_admin($user_id, $group_id) 
-                            || groups_is_user_mod($user_id, $group_id) 
-                            || groups_is_user_member($user_id, $group_id) 
-                            );
+                $can_post = ( groups_is_user_member($user_id, $group_id) );
                 break;
             case 'mod':
                 $can_post = ( groups_is_user_admin($user_id, $group_id) 
