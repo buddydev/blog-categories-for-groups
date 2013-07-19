@@ -44,9 +44,30 @@ function bcg_is_enabled_for_group(){
  */
 function bcg_current_user_can_post(){
     global $bp;
-    $user_id=  bp_loggedin_user_id();
-    $group_id=  bp_get_current_group_id();
-    $can_post=is_user_logged_in()&&(groups_is_user_admin($user_id, $group_id)||groups_is_user_mod($user_id, $group_id));
+    $user_id =  bp_loggedin_user_id();
+    $group_id =  bp_get_current_group_id();
+    $level_to_post = groups_get_groupmeta( $group_id,'bcg_level_to_post' );
+    $can_post = false;
+
+    if ( $user_id ) {
+        switch ($level_to_post) {
+            case 'member':
+                $can_post = ( groups_is_user_admin($user_id, $group_id) 
+                            || groups_is_user_mod($user_id, $group_id) 
+                            || groups_is_user_member($user_id, $group_id) 
+                            );
+                break;
+            case 'mod':
+                $can_post = ( groups_is_user_admin($user_id, $group_id) 
+                            || groups_is_user_mod($user_id, $group_id) 
+                            );
+                break;
+            case 'admin':
+            default:
+                $can_post = groups_is_user_admin($user_id, $group_id);
+                break;
+        }
+    }
     
     return apply_filters('bcg_current_user_can_post',$can_post,$group_id,$user_id);
 }
@@ -103,7 +124,8 @@ function bcg_update_groupmeta($group_id){
 
     $input = array(
         'bcg_is_enabled',
-        'bcg_tab_label'        
+        'bcg_tab_label',
+        'bcg_level_to_post'       
         );
 
     foreach( $input as $field ) {

@@ -131,6 +131,8 @@ function bcg_admin_form(){
     $group_id = bp_get_group_id();
     $bcg_is_active_setting = groups_get_groupmeta( $group_id, 'bcg_is_enabled' );
     $bcg_tab_label = groups_get_groupmeta( $group_id, 'bcg_tab_label' );
+    $level_to_post = groups_get_groupmeta( $group_id,'bcg_level_to_post' );
+
     if ( empty( $bcg_tab_label ) ) 
       $bcg_tab_label = __( 'Blog', 'bcg' );
 
@@ -147,6 +149,16 @@ function bcg_admin_form(){
        <input type="text" name="bcg_tab_label" id="bcg_tab_label" value="<?php echo esc_html( $bcg_tab_label ); ?>" />
      </p>
     <?php
+    echo "<p><label for='bcg_level_to_post'>".__("Who should be able to create new posts?","bcg")."</label>";
+    ?>
+       <select name="bcg_level_to_post" id="bcg_level_to_post">
+        <option <?php selected( $level_to_post, "admin" ); ?> value="admin">Group Admins Only</option>
+        <option <?php selected( $level_to_post, "mod" ); 
+                if (empty($level_to_post)) { echo 'selected="selected"' ;} ?> value="mod">Group Admins and Moderators</option>
+        <option <?php selected( $level_to_post, "member" ); ?> value="member">Any Group Member</option> 
+      </select>
+     </p>
+     <?php
 
     $selected_cats = bcg_get_categories($group_id);
     echo "<p>".__("Select a category to associate its posts with this group.","bcg")."</p>";
