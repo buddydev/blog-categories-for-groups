@@ -26,6 +26,16 @@ function bcg_is_disabled_for_group(){
 
     return apply_filters('bcg_is_disabled_for_group',bcg_is_disabled($group_id));
 }
+function bcg_is_enabled_for_group(){
+    global $bp;
+    $group_id=false;
+    if ( bp_is_group_create() )
+        $group_id = $_COOKIE['bp_new_group_id'];
+    else if( bp_is_group() )
+        $group_id = $bp->groups->current_group->id;
+
+    return apply_filters('bcg_is_enabled_for_group',bcg_is_enabled($group_id));
+}
 
 /**
  * Can the current user post to group blog
@@ -58,6 +68,11 @@ function bcg_is_disabled($group_id){
     $is_disabled=groups_get_groupmeta($group_id,"bcg_is_active");
     return apply_filters("bcg_is_disabled",intval($is_disabled),$group_id);
 }
+function bcg_is_enabled($group_id){
+    //Value will be 1 if active
+    $is_enabled = groups_get_groupmeta($group_id,"bcg_is_enabled");
+    return apply_filters("bcg_is_enabled",intval($is_enabled),$group_id);
+}
 //call me business function
 function bcg_get_categories($group_id){
     $cats=groups_get_groupmeta($group_id,'group_blog_cats');
@@ -65,8 +80,49 @@ function bcg_get_categories($group_id){
 }
 //update table
 function bcg_update_categories($group_id,$cats){
-    $cats=maybe_serialize($cats);
-    return  groups_update_groupmeta($group_id, "group_blog_cats", $cats);
+    $success = false;
+    //groups_update_groupmeta returns false if the old value matches the new value, so we'll need to check for that case
+    //groups_get_groupmeta sometimes unserializes the data, but not always. No idea why.
+    $old_setting = maybe_unserialize( groups_get_groupmeta( $group_id, "group_blog_cats" ) );
+    $serialized_cats = maybe_serialize($cats);
+
+    if ( empty($serialized_cats) && groups_delete_groupmeta( $group_id, "group_blog_cats" ) ) {
+            $success = true;
+    } else if ( $old_setting == $cats ) {
+            // No need to resave settings if they're the same
+            $success = true;
+    } else if ( groups_update_groupmeta( $group_id, "group_blog_cats", $serialized_cats ) ) {
+            $success = true;
+    }
+        
+    return $success;
+}
+
+function bcg_update_groupmeta($group_id){
+    $success = false;
+
+    $input = array(
+        'bcg_is_enabled',
+        'bcg_tab_label'        
+        );
+
+    foreach( $input as $field ) {
+        //groups_update_groupmeta returns false if the old value matches the new value, so we'll need to check for that case
+        $old_setting = groups_get_groupmeta( $group_id, $field );
+        $new_setting = ( isset( $_POST[$field] ) ) ? $_POST[$field] : '' ;
+        
+        if ( empty($new_setting) && groups_delete_groupmeta( $group_id, $field ) ) {
+            $success = true;
+        } elseif ( $old_setting == $new_setting ) {
+            // No need to resave settings if they're the same
+            $success = true;
+        } elseif ( groups_update_groupmeta( $group_id, $field, $new_setting ) ) {
+            $success = true;
+        }
+        
+    }
+
+    return $success;
 }
 
 //get the appropriate query for various screens

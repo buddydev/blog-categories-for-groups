@@ -4,7 +4,7 @@
  * Author: Brajesh Singh
  * Plugin URI:http://buddydev.com/plugins/blog-categories-for-groups/
  * Author URI:http://buddydev.com/members/sbrajesh/
- * Description: Allow Group admins;/mods to associate blog categories with groups
+ * Description: Allow Group admins/mods to associate blog categories with groups
  * Version: 1.1
  * Tested with WordPress 3.5.1+BuddyPress 1.7.2
  * License: GPL
@@ -116,15 +116,18 @@ class BCG_View_Helper{
         
         $group_id=bp_get_current_group_id();
 
-        if(bcg_is_disabled($group_id))
+        //Only show the navigation tab if this group has BCG enabled
+        if(!bcg_is_enabled($group_id))
             return;
+        //Get the user-specified label text
+        $label = groups_get_groupmeta( $group_id, 'bcg_tab_label' );
 
         $current_group=groups_get_current_group();
         
         $group_link = bp_get_group_permalink($current_group);
         
         bp_core_new_subnav_item( array( 
-            'name' =>             __( 'Blog', 'bcg' ),
+            'name'            => !empty( $label ) ? esc_html( $label ) : __( 'Blog', 'bcg' ),
             'slug' =>             BCG_SLUG,
             'parent_url' =>       $group_link,
             'parent_slug' =>      $current_group->slug,
@@ -148,6 +151,7 @@ class BCG_View_Helper{
                 'post_author'=>  bp_loggedin_user_id(),
                 'post_status'=>'draft',
                 'current_user_can_post'=>  bcg_current_user_can_post(),
+                // 'upload_count' => 1, //Changing this enables file uploads on the form.
                 'tax'=>array(
                     'category'=>array(
                         'include'=>bcg_get_categories($group_id),//selected cats,
@@ -196,7 +200,7 @@ class BCG_View_Helper{
              bp_core_load_template( apply_filters( 'groups_template_group_blog_single_post', 'bcg/home' ) );
             }
         else
-            bp_core_add_message (__("Sorry, the post does not exists!","bcg"),"error");
+            bp_core_add_message (__("Sorry, the post does not exist.","bcg"),"error");
 
        }
     }

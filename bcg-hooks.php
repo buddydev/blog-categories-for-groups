@@ -13,13 +13,14 @@ function bcg_save_group_prefs($group_id){
 }
 
 /*put a settings for allowing disallowing the bcg*/
-add_action('bp_before_group_settings_admin','bcg_group_disable_form');
-add_action('bp_before_group_settings_creation_step','bcg_group_disable_form');
+//Replaced by enable checkbox and settings
+// add_action('bp_before_group_settings_admin','bcg_group_disable_form');
+// add_action('bp_before_group_settings_creation_step','bcg_group_disable_form');
 //check if the group yt is enabled
 function bcg_group_disable_form(){?>
 
     <div class="checkbox">
-        <label><input type="checkbox" name="group-disable-bcg" id="group-disable-bcg" value="1" <?php if(bcg_is_disabled_for_group()):?> checked="checked"<?php endif;?>/> <?php _e( 'Disable Blog Categories', 'bcg' ) ?></label>
+        <label><input type="checkbox" name="group-disable-bcg" id="group-disable-bcg" value="1" <?php if(bcg_is_disabled_for_group()):?> checked="checked"<?php endif;?>/> <?php _e( 'Disable group blog.', 'bcg' ) ?></label>
     </div>
 <?php
 
