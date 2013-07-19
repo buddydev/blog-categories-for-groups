@@ -13,8 +13,9 @@ function bcg_save_group_prefs($group_id){
 }
 
 /*put a settings for allowing disallowing the bcg*/
-add_action('bp_before_group_settings_admin','bcg_group_disable_form');
-add_action('bp_before_group_settings_creation_step','bcg_group_disable_form');
+//Replaced by enable checkbox and settings
+// add_action('bp_before_group_settings_admin','bcg_group_disable_form');
+// add_action('bp_before_group_settings_creation_step','bcg_group_disable_form');
 //check if the group yt is enabled
 function bcg_group_disable_form(){?>
 
