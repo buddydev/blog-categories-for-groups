@@ -88,7 +88,7 @@ if ( class_exists( 'BP_Group_Extension' ) ) :
 				bp_core_add_message( __( 'Group Blog Categories settings were successfully updated.', 'bcg' ) );
 			}
 
-			bp_core_redirect( bp_get_group_permalink( $bp->groups->current_group ) . 'admin/' . $this->slug );
+			bp_core_redirect( bp_get_group_permalink( $bp->groups->current_group ) . 'admin/' . bcg_get_slug() );
 		}
 
 		function display() {
