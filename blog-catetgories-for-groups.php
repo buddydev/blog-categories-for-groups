@@ -11,9 +11,6 @@
  * Date: May 30, 2013
  */
 
-if(!defined('BCG_SLUG'))
-    define('BCG_SLUG','blog');
-
 define('BCG_PLUGIN_DIR',  plugin_dir_path(__FILE__));
 /**
  * The blog categories for Groups helper class
@@ -93,7 +90,7 @@ class BCG_View_Helper{
     private function __construct() {
         
         //setup nav
-        add_action('groups_setup_nav',  array($this,'setup_nav'));
+        // add_action('groups_setup_nav',  array($this,'setup_nav'));
         add_action('bp_ready',          array($this,'screen_group_blog_single_post'),5);
         add_action('bp_init',           array($this,'register_form'));
 
@@ -128,7 +125,7 @@ class BCG_View_Helper{
         
         bp_core_new_subnav_item( array( 
             'name'            => !empty( $label ) ? esc_html( $label ) : __( 'Blog', 'bcg' ),
-            'slug' =>             BCG_SLUG,
+            'slug' =>             bcg_get_slug(),
             'parent_url' =>       $group_link,
             'parent_slug' =>      $current_group->slug,
             'screen_function' =>  array($this,'screen_group_blog'),
@@ -192,7 +189,7 @@ class BCG_View_Helper{
        if(($current_group->status=='private'||$current_group->status=='hidden')&&(!is_user_logged_in()||!groups_is_user_member(bp_loggedin_user_id(), $current_group->id)))
        return;//avoid prioivacy troubles
 
-       if (bp_is_groups_component() && bp_is_current_action(BCG_SLUG) &&!empty($bp->action_variables[0]) ){
+       if (bp_is_groups_component() && bp_is_current_action( bcg_get_slug() ) &&!empty($bp->action_variables[0]) ){
 
            $wpq=new WP_Query(bcg_get_query());
             if($wpq->have_posts()){

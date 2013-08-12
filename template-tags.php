@@ -28,7 +28,7 @@ function bcg_loop_end(){
 //get post permalink which leads to group blog single post page
 function bcg_get_post_permalink($post){
     
-     return bp_get_group_permalink(groups_get_current_group()).BCG_SLUG."/".$post->post_name;
+     return bp_get_group_permalink(groups_get_current_group()).bcg_get_slug()."/".$post->post_name;
 }
 /**
  * Generate Pagination Link for posts
@@ -83,7 +83,7 @@ function bcg_posts_pagination_count($q){
  */
 function bcg_is_component(){
     global $bp;
-    if (bp_is_current_component($bp->groups->slug) && bp_is_current_action(BCG_SLUG ))
+    if (bp_is_current_component($bp->groups->slug) && bp_is_current_action( bcg_get_slug() ))
         return true;
     
     return false;
@@ -131,10 +131,13 @@ function bcg_admin_form(){
     $group_id = bp_get_group_id();
     $bcg_is_active_setting = groups_get_groupmeta( $group_id, 'bcg_is_enabled' );
     $bcg_tab_label = groups_get_groupmeta( $group_id, 'bcg_tab_label' );
+    $bcg_slug = groups_get_groupmeta( $group_id, 'bcg_slug' );
     $level_to_post = groups_get_groupmeta( $group_id,'bcg_level_to_post' );
 
     if ( empty( $bcg_tab_label ) ) 
       $bcg_tab_label = __( 'Blog', 'bcg' );
+    if ( empty( $bcg_slug) ) 
+      $bcg_slug = 'blog';
 
 
     echo "<p>".__("Blog Categories for Groups allows your group to have a voice in this site&rsquo;s blog. If enabled, your group will be able to submit posts for publication within a specific category. Posts in this category (or categories) will also be displayed within your group&rsquo;s space.","bcg")."</p>";
@@ -147,6 +150,11 @@ function bcg_admin_form(){
     echo "<p><label for='bcg_tab_label'>".__("Change the BuddyPress group tab label from 'Blog' to whatever you'd like.","bcg")."</label>";
     ?>
        <input type="text" name="bcg_tab_label" id="bcg_tab_label" value="<?php echo esc_html( $bcg_tab_label ); ?>" />
+     </p>
+     <?php
+    echo "<p><label for='bcg_slug'>".__("Change the slug to something other than 'blog'.","bcg")."</label>";
+    ?>
+       <input type="text" name="bcg_slug" id="bcg_slug" value="<?php echo esc_html( $bcg_slug ); ?>" />
      </p>
     <?php
     echo "<p><label for='bcg_level_to_post'>".__("Who should be able to create new posts?","bcg")."</label>";
@@ -224,7 +232,7 @@ function bcg_get_post_form($group_id){
     
 
     //for form
-    $url=bp_get_group_permalink(new BP_Groups_Group($group_id)).BCG_SLUG."/create/";
+    $url=bp_get_group_permalink(new BP_Groups_Group($group_id)).bcg_get_slug()."/create/";
     if(function_exists('bp_get_simple_blog_post_form')){
         
        $form=bp_get_simple_blog_post_form('bcg_form');

@@ -43,7 +43,7 @@ function bcg_is_enabled_for_group(){
  * @return type 
  */
 function bcg_current_user_can_post(){
-    global $bp;
+    // global $bp;
     $user_id =  bp_loggedin_user_id();
     $group_id =  bp_get_current_group_id();
     $level_to_post = groups_get_groupmeta( $group_id,'bcg_level_to_post' );
@@ -77,7 +77,7 @@ if(!empty($group_id))
 else
     $group=  groups_get_current_group();
 
-return apply_filters('bcg_home_url',  bp_get_group_permalink($group).BCG_SLUG);
+return apply_filters('bcg_home_url',  bp_get_group_permalink($group).bcg_get_slug());
 }
 
 function bcg_is_disabled($group_id){
@@ -88,8 +88,8 @@ function bcg_is_disabled($group_id){
 }
 function bcg_is_enabled($group_id){
     //Value will be 1 if active
-    $is_enabled = groups_get_groupmeta($group_id,"bcg_is_enabled");
-    return apply_filters("bcg_is_enabled",intval($is_enabled),$group_id);
+    $is_enabled = (bool) groups_get_groupmeta($group_id,"bcg_is_enabled");
+    return apply_filters("bcg_is_enabled",$is_enabled,$group_id);
 }
 //call me business function
 function bcg_get_categories($group_id){
@@ -122,7 +122,8 @@ function bcg_update_groupmeta($group_id){
     $input = array(
         'bcg_is_enabled',
         'bcg_tab_label',
-        'bcg_level_to_post'       
+        'bcg_level_to_post',
+        'bcg_slug'       
         );
 
     foreach( $input as $field ) {
@@ -163,4 +164,20 @@ if(bcg_is_category ()){
 else
     $query= "cat=".$cats_list;
 return apply_filters("bcg_get_query",$query."&paged=".$paged);
+}
+
+function bcg_get_tab_label() {
+    $label = groups_get_groupmeta( bp_get_current_group_id(), 'bcg_tab_label' );
+    if ( empty($label) ) {
+        $label = __('Blog Categories','bcg');
+    }
+    return apply_filters('bcg_get_tab_label', $label);
+}
+
+function bcg_get_slug() {
+    $slug = groups_get_groupmeta( bp_get_current_group_id(), 'bcg_slug' );
+    if ( empty($slug) ) {
+        $slug = 'blog';
+    }
+    return apply_filters('bcg_get_slug', $slug);
 }
