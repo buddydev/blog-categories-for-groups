@@ -28,7 +28,7 @@ function bcg_loop_end(){
 //get post permalink which leads to group blog single post page
 function bcg_get_post_permalink($post){
     
-     return bp_get_group_permalink(groups_get_current_group()).BCG_SLUG."/".$post->post_name;
+     return bp_get_group_permalink(groups_get_current_group()).bcg_get_slug()."/".$post->post_name;
 }
 /**
  * Generate Pagination Link for posts
@@ -83,7 +83,7 @@ function bcg_posts_pagination_count($q){
  */
 function bcg_is_component(){
     global $bp;
-    if (bp_is_current_component($bp->groups->slug) && bp_is_current_action(BCG_SLUG ))
+    if (bp_is_current_component($bp->groups->slug) && bp_is_current_action( bcg_get_slug() ))
         return true;
     
     return false;
@@ -128,36 +128,89 @@ function bcg_get_options_menu(){?>
 
 //form for showing category lists
 function bcg_admin_form(){
-    $group_id=bp_get_group_id();
+    $group_id = bp_get_group_id();
+    $bcg_is_active_setting = groups_get_groupmeta( $group_id, 'bcg_is_enabled' );
+    $bcg_tab_label = groups_get_groupmeta( $group_id, 'bcg_tab_label' );
+    $bcg_slug = groups_get_groupmeta( $group_id, 'bcg_slug' );
+    $level_to_post = groups_get_groupmeta( $group_id,'bcg_level_to_post' );
 
-    $selected_cats=bcg_get_categories($group_id);
-    echo "<p>".__("Check a category to assopciate the posts in this category with this group.","bcg")."</p>";
+    if ( empty( $bcg_tab_label ) ) 
+      $bcg_tab_label = __( 'Blog', 'bcg' );
+    if ( empty( $bcg_slug) ) 
+      $bcg_slug = 'blog';
+
+
+    echo "<p>".__("Blog Categories for Groups allows your group to have a voice in this site&rsquo;s blog. If enabled, your group will be able to submit posts for publication within a specific category. Posts in this category (or categories) will also be displayed within your group&rsquo;s space.","bcg")."</p>";
+    ?>
+    <p>
+       <label for="bcg_is_enabled"> <input type="checkbox" name="bcg_is_enabled" id="bcg_is_enabled" value="1" <?php checked( $bcg_is_active_setting, true ) ?> /> <?php _e( 'Enable Blog Categories for Groups for this group', 'bcg' ) ?></label>
+    </p>
+    <div id="bcg_settings_details">
+    <?php
+    echo "<p><label for='bcg_tab_label'>".__("Change the BuddyPress group tab label from 'Blog' to whatever you'd like.","bcg")."</label>";
+    ?>
+       <input type="text" name="bcg_tab_label" id="bcg_tab_label" value="<?php echo esc_html( $bcg_tab_label ); ?>" />
+     </p>
+     <?php
+    echo "<p><label for='bcg_slug'>".__("Change the slug to something other than 'blog'.","bcg")."</label>";
+    ?>
+       <input type="text" name="bcg_slug" id="bcg_slug" value="<?php echo esc_html( $bcg_slug ); ?>" />
+     </p>
+    <?php
+    echo "<p><label for='bcg_level_to_post'>".__("Who should be able to create new posts?","bcg")."</label>";
+    ?>
+       <select name="bcg_level_to_post" id="bcg_level_to_post">
+        <option <?php selected( $level_to_post, "admin" ); ?> value="admin">Group Admins Only</option>
+        <option <?php selected( $level_to_post, "mod" ); 
+                if (empty($level_to_post)) { echo 'selected="selected"' ;} ?> value="mod">Group Admins and Moderators</option>
+        <option <?php selected( $level_to_post, "member" ); ?> value="member">Any Group Member</option> 
+      </select>
+     </p>
+     <?php
+
+    $selected_cats = bcg_get_categories($group_id);
+    echo "<p>".__("Select a category to associate its posts with this group.","bcg")."</p>";
 
     $cat_ids=get_all_category_ids();
-    if(is_array($cat_ids)){////it is sure but do not take risk
-            foreach($cat_ids as $cat_id){//show the form
-                $checked=0;
-	if(!empty($selected_cats)&&in_array($cat_id,$selected_cats))
-			$checked=true;
-	?>
-	<label  style="padding:5px;display:block;float:left;">
-        <input type="checkbox" name="blog_cats[]" id="<?php $opt_id;?>" value="<?php echo $cat_id;?>" <?php if($checked) echo "checked='checked'" ;?>/>
-        <?php echo get_cat_name($cat_id);?>
-	</label>
-
+    if(is_array($cat_ids)){ ////it is sure but do not take risk
+      foreach($cat_ids as $cat_id){ //show the form
+          $checked=0;
+        	if(!empty($selected_cats)&&in_array($cat_id,$selected_cats))
+        			$checked=true;
+        	?>
+        	<label  style="padding:5px;display:block;float:left;">
+                <input type="checkbox" name="blog_cats[]" id="<?php $opt_id;?>" value="<?php echo $cat_id;?>" <?php if($checked) echo "checked='checked'" ;?>/>
+                <?php echo get_cat_name($cat_id);?>
+        	</label>
 <?php
-   }
-}
-  else{
+       } //Ends foreach
+} else {
       ?>
-
     <div class="error">
-        <p><?php _e("Please create the categories first to attach them to a group.","bcg");?></p>
+        <p><?php _e("Please create the categories before trying to attach them to a group.","bcg");?></p>
     </div>
-<?php
+    <?php
      }
-?>
+?>  </div> <!-- End #bcg_settings_details -->
     <div class="clear"></div>
+    <script type="text/javascript">
+      jQuery(document).ready(function() {
+        //match visibility on page load
+        if ( jQuery('#bcg_is_enabled').is(':checked') ) {
+              jQuery('#bcg_settings_details').show();
+          } else {
+              jQuery('#bcg_settings_details').hide();
+          }
+        //update visibility on change
+        jQuery('#bcg_is_enabled').click(function() {
+          if ( jQuery(this).is(':checked') ) {
+              jQuery('#bcg_settings_details').show();
+          } else {
+              jQuery('#bcg_settings_details').hide();
+          }
+        });      
+      });
+    </script>
 
 <?php
 }
@@ -170,7 +223,7 @@ function bcg_get_post_form($group_id){
     global $bp;
     $cat_selected=bcg_get_categories($group_id);//selected cats
     if(empty($cat_selected)){
-             _e('This group has no associated categories. To post to Group blog, you need to associate some categoris to it.','bcg');
+             _e('This group has no categories associated with it. To post to group blog, first associate one or more categories with it.','bcg');
             return;
         }
 
@@ -179,7 +232,7 @@ function bcg_get_post_form($group_id){
     
 
     //for form
-    $url=bp_get_group_permalink(new BP_Groups_Group($group_id)).BCG_SLUG."/create/";
+    $url=bp_get_group_permalink(new BP_Groups_Group($group_id)).bcg_get_slug()."/create/";
     if(function_exists('bp_get_simple_blog_post_form')){
         
        $form=bp_get_simple_blog_post_form('bcg_form');
