@@ -133,16 +133,16 @@ function bcg_admin_form(){
     $selected_cats=bcg_get_categories($group_id);
     echo "<p>".__("Check a category to assopciate the posts in this category with this group.","bcg")."</p>";
 
-    $cat_ids=get_all_category_ids();
-    if(is_array($cat_ids)){////it is sure but do not take risk
-            foreach($cat_ids as $cat_id){//show the form
+    $cats=bcg_get_all_terms();
+    if(is_array($cats)){////it is sure but do not take risk
+            foreach($cats as $cat){//show the form
                 $checked=0;
-	if(!empty($selected_cats)&&in_array($cat_id,$selected_cats))
+	if(!empty($selected_cats)&&in_array($cat->term_id,$selected_cats))
 			$checked=true;
 	?>
 	<label  style="padding:5px;display:block;float:left;">
-        <input type="checkbox" name="blog_cats[]" id="<?php $opt_id;?>" value="<?php echo $cat_id;?>" <?php if($checked) echo "checked='checked'" ;?>/>
-        <?php echo get_cat_name($cat_id);?>
+        <input type="checkbox" name="blog_cats[]" id="<?php $opt_id;?>" value="<?php echo $cat->term_id;?>" <?php if($checked) echo "checked='checked'" ;?>/>
+        <?php echo $cat->name;?>
 	</label>
 
 <?php

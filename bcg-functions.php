@@ -1,7 +1,13 @@
 <?php
 
+
+
+/**
+ * Load a template
+ * @param type $template
+ */
 function bcg_load_template( $template ){
-    
+    //if 
     if( is_readable( STYLESHEETPATH.'/'.$template ) )
             $load=STYLESHEETPATH.'/'.$template;
     elseif( is_readable(TEMPLATEPATH.'/'.$template ) )
@@ -56,47 +62,94 @@ function bcg_is_disabled( $group_id ){
     if( empty( $group_id ) )
         return false; //if grou id is empty, it is active
     $is_disabled = groups_get_groupmeta( $group_id,"bcg_is_active" );
-    return apply_filters("bcg_is_disabled",intval($is_disabled),$group_id);
+    return apply_filters( "bcg_is_disabled",intval( $is_disabled ),$group_id );
 }
 //call me business function
-function bcg_get_categories($group_id){
-    $cats=groups_get_groupmeta($group_id,'group_blog_cats');
-    return maybe_unserialize($cats);
+function bcg_get_categories( $group_id ){
+    $cats = groups_get_groupmeta( $group_id,'group_blog_cats' );
+    return maybe_unserialize( $cats );
 }
 //update table
-function bcg_update_categories($group_id,$cats){
-    $cats=maybe_serialize($cats);
-    return  groups_update_groupmeta($group_id, "group_blog_cats", $cats);
+function bcg_update_categories( $group_id,$cats ){
+    $cats = maybe_serialize( $cats );
+    return  groups_update_groupmeta( $group_id, "group_blog_cats", $cats );
 }
 
 //get the appropriate query for various screens
 function bcg_get_query(){
     global $bp;
-   $cats=bcg_get_categories($bp->groups->current_group->id);
+   $cats = bcg_get_categories( $bp->groups->current_group->id );
 
-   if(!empty($cats))
-        $cats_list=join(",",$cats);
-   else return "name=-1";//we know it will not find anything
- if(bcg_is_single_post()){
-        $slug=$bp->action_variables[0];
-        return "name=".$slug."&cat=".$cats_list;
- }
- $paged=(get_query_var('paged')) ? get_query_var('paged') : 1;
-if(bcg_is_category ()){
-    $query="cat=".$bp->action_variables[1];
+   $qs = array(
+            'post_type' => bcg_get_post_type(),
+            'post_status' => 'publish'
+     
+   );
+   //if( !empty( $cats ) )
+      //  $cats_list = join( ",",$cats );
+   if( empty( $cats ) ){
+        $qs ['name'] =-1;//we know it will not find anything
+ 
+   }
+   
+   if( bcg_is_single_post() ){
+        $slug = $bp->action_variables[0];
+        $qs['name'] = $slug;
+        //tax query
+        $qs['tax_query'] =  array(
+                array(
+                    'taxonomy'=>  bcg_get_taxonomy(),
+                    'terms'   => $cats,
+                    'field' => 'id',
+                     'operator'=>'IN',
+                )
+        );
+        
+        }
+ 
+ $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+if( bcg_is_category () ){
+    $qs['tax_query']= array(
+            array(
+                'taxonomy'=> bcg_get_taxonomy(),
+                'terms'=>$cats,
+                'field'=>'id',
+                'operator'=>'IN',
+                
+            )
+    );
+    
+   // $query="cat=".$bp->action_variables[1];
 }//only posts from current category
-else
-    $query= "cat=".$cats_list;
-return apply_filters("bcg_get_query",$query."&paged=".$paged);
+else{
+    $qs['tax_query']= array(
+            array(
+                'taxonomy'=> bcg_get_taxonomy(),
+                'terms'=>$cats,
+                'field'=>'id',
+                'operator'=>'IN',
+                
+            )
+    );
+    
+}
+$qs ['paged'] = $paged;
+
+return apply_filters("bcg_get_query", $query);
 }
 
 
 function bcg_get_taxonomy(){
     
-    return apply_filters('bcg_get_taxonomy','category');
+    return apply_filters('bcg_get_taxonomy','faq-plus-category');
 }
 
 function bcg_get_post_type(){
      return apply_filters('bcg_get_post_type','post');
 }
 
+function bcg_get_all_terms(){
+    
+    $cats = get_terms(bcg_get_taxonomy(), array('fields' => 'all', 'get' => 'all') );
+    return $cats;
+}
