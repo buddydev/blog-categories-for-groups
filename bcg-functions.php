@@ -1,10 +1,10 @@
 <?php
 
-function bcg_load_template($template){
+function bcg_load_template( $template ){
     
-    if(is_readable(STYLESHEETPATH.'/'.$template))
+    if( is_readable( STYLESHEETPATH.'/'.$template ) )
             $load=STYLESHEETPATH.'/'.$template;
-    elseif(is_readable(TEMPLATEPATH.'/'.$template))
+    elseif( is_readable(TEMPLATEPATH.'/'.$template ) )
             $load=TEMPLATEPATH.'/'.$template;
     else
             $load=BCG_PLUGIN_DIR.$template;
@@ -18,13 +18,13 @@ function bcg_load_template($template){
  */
 function bcg_is_disabled_for_group(){
     global $bp;
-    $group_id=false;
-    if (bp_is_group_create())
-        $group_id=$_COOKIE['bp_new_group_id'];
-   else if(bp_is_group ())
-        $group_id=$bp->groups->current_group->id;
+    $group_id = false;
+    if ( bp_is_group_create() )
+        $group_id = $_COOKIE['bp_new_group_id'];
+   else if( bp_is_group () )
+        $group_id = $bp->groups->current_group->id;
 
-    return apply_filters('bcg_is_disabled_for_group',bcg_is_disabled($group_id));
+    return apply_filters( 'bcg_is_disabled_for_group',bcg_is_disabled( $group_id ) );
 }
 
 /**
@@ -34,28 +34,28 @@ function bcg_is_disabled_for_group(){
  */
 function bcg_current_user_can_post(){
     global $bp;
-    $user_id=  bp_loggedin_user_id();
-    $group_id=  bp_get_current_group_id();
-    $can_post=is_user_logged_in()&&(groups_is_user_admin($user_id, $group_id)||groups_is_user_mod($user_id, $group_id));
+    $user_id  =  bp_loggedin_user_id();
+    $group_id =  bp_get_current_group_id();
+    $can_post =  is_user_logged_in()&&( groups_is_user_admin( $user_id, $group_id )||groups_is_user_mod( $user_id, $group_id ) );
     
-    return apply_filters('bcg_current_user_can_post',$can_post,$group_id,$user_id);
+    return apply_filters( 'bcg_current_user_can_post',$can_post,$group_id,$user_id );
 }
 
-function  bcg_get_home_url($group_id=null){
+function  bcg_get_home_url( $group_id = null ){
     global $bp;
 
-if(!empty($group_id))
-    $group=new BP_Groups_Group ($group_id);
+if( !empty( $group_id ) )
+    $group = new BP_Groups_Group ( $group_id );
 else
-    $group=  groups_get_current_group();
+    $group = groups_get_current_group();
 
-return apply_filters('bcg_home_url',  bp_get_group_permalink($group).BCG_SLUG);
+return apply_filters( 'bcg_home_url',  bp_get_group_permalink( $group ).BCG_SLUG );
 }
 
-function bcg_is_disabled($group_id){
-    if(empty($group_id))
+function bcg_is_disabled( $group_id ){
+    if( empty( $group_id ) )
         return false; //if grou id is empty, it is active
-    $is_disabled=groups_get_groupmeta($group_id,"bcg_is_active");
+    $is_disabled = groups_get_groupmeta( $group_id,"bcg_is_active" );
     return apply_filters("bcg_is_disabled",intval($is_disabled),$group_id);
 }
 //call me business function
@@ -89,3 +89,14 @@ else
     $query= "cat=".$cats_list;
 return apply_filters("bcg_get_query",$query."&paged=".$paged);
 }
+
+
+function bcg_get_taxonomy(){
+    
+    return apply_filters('bcg_get_taxonomy','category');
+}
+
+function bcg_get_post_type(){
+     return apply_filters('bcg_get_post_type','post');
+}
+
