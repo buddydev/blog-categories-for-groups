@@ -1,13 +1,10 @@
 <?php
-
-
-
 /**
  * Load a template
  * @param type $template
  */
 function bcg_load_template( $template ){
-    //if 
+  
     if( is_readable( STYLESHEETPATH.'/'.$template ) )
             $load=STYLESHEETPATH.'/'.$template;
     elseif( is_readable(TEMPLATEPATH.'/'.$template ) )
@@ -15,7 +12,7 @@ function bcg_load_template( $template ){
     else
             $load=BCG_PLUGIN_DIR.$template;
     
-        include_once $load;
+    include_once $load;
 }
 /**
  *
@@ -85,8 +82,6 @@ function bcg_get_query(){
             'post_status' => 'publish'
      
    );
-   //if( !empty( $cats ) )
-      //  $cats_list = join( ",",$cats );
    if( empty( $cats ) ){
         $qs ['name'] =-1;//we know it will not find anything
  
@@ -98,10 +93,10 @@ function bcg_get_query(){
         //tax query
         $qs['tax_query'] =  array(
                 array(
-                    'taxonomy'=>  bcg_get_taxonomy(),
-                    'terms'   => $cats,
-                    'field' => 'id',
-                     'operator'=>'IN',
+                    'taxonomy'  =>  bcg_get_taxonomy(),
+                    'terms'     =>  $cats,
+                    'field'     =>  'id',
+                    'operator' =>  'IN',
                 )
         );
         
@@ -111,45 +106,42 @@ function bcg_get_query(){
 if( bcg_is_category () ){
     $qs['tax_query']= array(
             array(
-                'taxonomy'=> bcg_get_taxonomy(),
-                'terms'=>$cats,
-                'field'=>'id',
-                'operator'=>'IN',
+                'taxonomy'  => bcg_get_taxonomy(),
+                'terms'     => $cats,
+                'field'     => 'id',
+                'operator'  => 'IN',
                 
             )
     );
-    
-   // $query="cat=".$bp->action_variables[1];
-}//only posts from current category
+}
 else{
     $qs['tax_query']= array(
             array(
                 'taxonomy'=> bcg_get_taxonomy(),
-                'terms'=>$cats,
-                'field'=>'id',
-                'operator'=>'IN',
-                
+                'terms'   => $cats,
+                'field'   => 'id',
+                'operator'=> 'IN'
             )
     );
     
 }
 $qs ['paged'] = $paged;
 
-return apply_filters("bcg_get_query", $query);
+return apply_filters( "bcg_get_query", $query );
 }
-
 
 function bcg_get_taxonomy(){
     
-    return apply_filters('bcg_get_taxonomy','faq-plus-category');
+    return apply_filters( 'bcg_get_taxonomy','category');
 }
 
 function bcg_get_post_type(){
-     return apply_filters('bcg_get_post_type','post');
+    
+     return apply_filters( 'bcg_get_post_type','post' );
 }
 
 function bcg_get_all_terms(){
     
-    $cats = get_terms(bcg_get_taxonomy(), array('fields' => 'all', 'get' => 'all') );
+    $cats = get_terms( bcg_get_taxonomy(), array( 'fields' => 'all', 'get' => 'all') );
     return $cats;
 }

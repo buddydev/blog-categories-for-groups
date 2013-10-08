@@ -14,7 +14,6 @@
 				<div class="item-list-tabs no-ajax" id="object-nav">
 					<ul>
 						<?php bp_get_options_nav() ?>
-
 						<?php do_action( 'bp_group_options_nav' ) ?>
 					</ul>
 				</div>
@@ -22,16 +21,16 @@
 			<div id="item-body">
 			<div id="subnav" class="item-list-tabs no-ajax">
 			<ul>
-			<?php bcg_get_options_menu();?>
+                <?php bcg_get_options_menu();?>
 			</ul>
 			</div>
 			<?php
-			if(bcg_is_single_post())
-				bcg_load_template('bcg/single-post.php' );
-			else if(bcg_is_post_create())
-				bcg_load_template('bcg/create.php' );
-			else
-				bcg_load_template( 'bcg/blog.php');
+                if( bcg_is_single_post() )
+                    bcg_load_template( 'bcg/single-post.php' );
+                else if( bcg_is_post_create() )
+                    bcg_load_template( 'bcg/create.php' );
+                else
+                    bcg_load_template( 'bcg/blog.php');
 			?>
 			</div>
 			

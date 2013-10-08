@@ -123,15 +123,15 @@ class BCG_View_Helper{
         $group_link    = bp_get_group_permalink( $current_group );
         
         bp_core_new_subnav_item( array( 
-                'name'              =>__( 'Blog', 'bcg' ),
-                'slug'              =>BCG_SLUG,
-                'parent_url'        =>$group_link,
-                'parent_slug'       =>$current_group->slug,
-                'screen_function'   =>array( $this,'screen_group_blog' ),
-                'position'          =>10,
-                'user_has_access'   =>$current_user_access,
-                'item_css_id'       =>'blog'
-                ) );
+                                    'name'              => __( 'Blog', 'bcg' ),
+                                    'slug'              => BCG_SLUG,
+                                    'parent_url'        => $group_link,
+                                    'parent_slug'       => $current_group->slug,
+                                    'screen_function'   => array( $this,'screen_group_blog' ),
+                                    'position'          => 10,
+                                    'user_has_access'   => $current_user_access,
+                                    'item_css_id'       => 'blog'
+                                    ) );
 
     }
     /**
@@ -145,17 +145,17 @@ class BCG_View_Helper{
             $form_params=array(
                     'post_type'            =>  bcg_get_post_type(),
                     'post_author'          =>  bp_loggedin_user_id(),
-                    'post_status'          =>'draft',
+                    'post_status'          => 'draft',
                     'current_user_can_post'=>  bcg_current_user_can_post(),
                     'tax'=>array(
                         'category'=>array(
-                            'include'=>bcg_get_categories($group_id),//selected cats,
+                            'include'=> bcg_get_categories( $group_id ),//selected cats,
                         )
                     ),
 
-            'show_tags'=>false,//current version does not support the tag
+            'show_tags'    => false,//current version does not support the tag
 
-            'allowed_tags'=>array());
+            'allowed_tags' => array() );
             
             $form = bp_new_simple_blog_post_form( 'bcg_form',apply_filters( 'bcg_form_args', $form_params ) );
 
@@ -199,8 +199,6 @@ class BCG_View_Helper{
 
        }
     }
-    
-    
     
 }
 
