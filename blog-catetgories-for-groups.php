@@ -14,7 +14,7 @@
 if( !defined( 'BCG_SLUG' ) )
     define( 'BCG_SLUG','blog' );
 
-define( 'BCG_PLUGIN_DIR',  plugin_dir_path(__FILE__) );
+define( 'BCG_PLUGIN_DIR',  plugin_dir_path( __FILE__ ) );
 /**
  * The blog categories for Groups helper class
  * Loads the files and localizations
@@ -25,13 +25,13 @@ class BCGroups_Helper{
     
     private function __construct(){
         
-        add_action( 'bp_include',        array( $this,'load_extension' ) );
+        add_action( 'bp_include',        array( $this, 'load_extension' ) );
         
         //load javascript for comment reply
-        add_action( 'bp_enqueue_scripts', array( $this,'enqueue_script' ) );
+        add_action( 'bp_enqueue_scripts', array( $this, 'enqueue_script' ) );
         
         //load localization files
-        add_action ( 'bp_init',           array( $this,'load_textdomain' ), 2 );
+        add_action ( 'bp_init',           array( $this, 'load_textdomain' ), 2 );
     }
     
     public static function get_instance(){
@@ -53,7 +53,7 @@ class BCGroups_Helper{
         );
         
         foreach( $files as $file )
-            include_once ( BCG_PLUGIN_DIR.$file );
+            include_once ( BCG_PLUGIN_DIR . $file );
 
     }
     /**
@@ -64,7 +64,7 @@ class BCGroups_Helper{
         $locale = apply_filters( 'bcg_load_textdomain_get_locale', get_locale() );
         // if load .mo file
         if ( !empty( $locale ) ) {
-            $mofile_default = sprintf( '%s/languages/%s.mo',BCG_PLUGIN_DIR, $locale );
+            $mofile_default = sprintf( '%s/languages/%s.mo', BCG_PLUGIN_DIR, $locale );
             $mofile = apply_filters( 'bcg_load_mofile', $mofile_default );
             // make sure file exists, and load it
             if ( file_exists( $mofile ) ) {
@@ -92,9 +92,9 @@ class BCG_View_Helper{
     private function __construct() {
         
         //setup nav
-        add_action( 'groups_setup_nav',  array( $this,'setup_nav' ) );
-        add_action( 'bp_ready',          array( $this,'screen_group_blog_single_post' ),5 );
-        add_action( 'bp_init',           array( $this,'register_form' ) );
+        add_action( 'groups_setup_nav',  array( $this, 'setup_nav' ) );
+        add_action( 'bp_ready',          array( $this, 'screen_group_blog_single_post' ),5 );
+        add_action( 'bp_init',           array( $this, 'register_form' ) );
 
     }
     
@@ -127,7 +127,7 @@ class BCG_View_Helper{
                                     'slug'              => BCG_SLUG,
                                     'parent_url'        => $group_link,
                                     'parent_slug'       => $current_group->slug,
-                                    'screen_function'   => array( $this,'screen_group_blog' ),
+                                    'screen_function'   => array( $this, 'screen_group_blog' ),
                                     'position'          => 10,
                                     'user_has_access'   => $current_user_access,
                                     'item_css_id'       => 'blog'
@@ -148,7 +148,7 @@ class BCG_View_Helper{
                     'post_status'          => 'draft',
                     'current_user_can_post'=>  bcg_current_user_can_post(),
                     'tax'=>array(
-                        'category'=>array(
+                        bcg_get_taxonomy() => array(
                             'include'=> bcg_get_categories( $group_id ),//selected cats,
                         )
                     ),
@@ -157,7 +157,7 @@ class BCG_View_Helper{
 
             'allowed_tags' => array() );
             
-            $form = bp_new_simple_blog_post_form( 'bcg_form',apply_filters( 'bcg_form_args', $form_params ) );
+            $form = bp_new_simple_blog_post_form( 'bcg_form', apply_filters( 'bcg_form_args', $form_params ) );
 
         }
         
@@ -172,11 +172,11 @@ class BCG_View_Helper{
     function screen_group_blog_single_post(){
        global $bp;
        
-       if( function_exists( 'bp_is_group' )&&!bp_is_group() )
+       if( function_exists( 'bp_is_group' )&& !bp_is_group() )
           return;
        
         //do not catch the request for creating new post
-       if( bp_is_action_variable( 'create',0 ) )
+       if( bp_is_action_variable( 'create', 0 ) )
                return;
        
        $current_group = groups_get_current_group();
@@ -184,7 +184,7 @@ class BCG_View_Helper{
        if( bcg_is_disabled( $current_group->id ) )
                return;
        //if the group is private/hidden and user is not member, return
-       if( ( $current_group->status=='private'||$current_group->status=='hidden' )&&( !is_user_logged_in()||!groups_is_user_member( bp_loggedin_user_id(), $current_group->id ) ) )
+       if( ( $current_group->status == 'private'|| $current_group->status == 'hidden' ) && ( !is_user_logged_in() || !groups_is_user_member( bp_loggedin_user_id(), $current_group->id ) ) )
        return;//avoid prioivacy troubles
 
        if ( bp_is_groups_component() && bp_is_current_action( BCG_SLUG ) &&!empty( $bp->action_variables[0] ) ){

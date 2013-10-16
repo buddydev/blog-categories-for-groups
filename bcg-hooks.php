@@ -3,9 +3,9 @@
 /**
  * Update and save group preference
  */
-add_action( 'groups_group_settings_edited','bcg_save_group_prefs' );
-add_action( 'groups_create_group'         ,'bcg_save_group_prefs' );
-add_action( 'groups_update_group'         ,'bcg_save_group_prefs' );
+add_action( 'groups_group_settings_edited', 'bcg_save_group_prefs' );
+add_action( 'groups_create_group'         , 'bcg_save_group_prefs' );
+add_action( 'groups_update_group'         , 'bcg_save_group_prefs' );
 
 function bcg_save_group_prefs( $group_id ){
       $disable = $_POST['group-disable-bcg'];
@@ -44,7 +44,11 @@ function bcg_fix_comment_form( $post_id ){
 
 
 //fix post permalink, should we ?
-add_filter( 'post_link','bcg_fix_permalink',10,3 );
+if( bcg_get_post_type() == 'post' )
+    add_filter( 'post_link', 'bcg_fix_permalink', 10, 3 );
+else
+    add_filter ( 'post_type_link', 'bcg_fix_permalink', 10, 3 );
+
 function bcg_fix_permalink( $post_link, $id, $leavename ){
     if( !is_bcg_pages()||!in_bcg_loop() )
         return $post_link;
@@ -52,7 +56,7 @@ function bcg_fix_permalink( $post_link, $id, $leavename ){
     $post_link = bcg_get_post_permalink( get_post( $id ) );
     return $post_link;
 }
-
+//todo ix term link too
 //on Blog category pages fix the category link to point to internal, may cause troubles in some case
 add_filter( 'category_link', 'bcg_fix_category_permalink',10,2 );
 function bcg_fix_category_permalink( $catlink, $category_id ){
@@ -60,8 +64,10 @@ function bcg_fix_category_permalink( $catlink, $category_id ){
          return $catlink;
      
     $permalink =  bcg_get_home_url();
-    $cat       =  get_category( $category_id );
+    //$cat       =  get_category( $category_id );
     //think about the cat permalink, do we need it or not?
 
-    return $permalink.'/category/'.$category_id;//no need for category_name
+    return $permalink . bcg_get_taxonomy() . $category_id;//no need for category_name
 }
+
+the_permalink();

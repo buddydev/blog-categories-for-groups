@@ -10,7 +10,7 @@ var $enable_edit_item   = true; // If your extensi
 	function __construct() {
         
         
-		$this->name = __( 'Blog Categories','bcg' );
+		$this->name = __( 'Blog Categories', 'bcg' );
 		$this->slug = 'blog-categories';
 
 		$this->create_step_position = 21;
@@ -27,8 +27,9 @@ var $enable_edit_item   = true; // If your extensi
 	function create_screen_save() {
 		global $bp;
 
-		check_admin_referer( 'groups_create_save_' . $this->slug );
-                $group_id = $bp->groups->new_group_id;
+		 check_admin_referer( 'groups_create_save_' . $this->slug );
+        
+         $group_id = $bp->groups->new_group_id;
 		 $cats = $_POST["blog_cats"];
                  
 			if ( !bcg_update_categories( $group_id, $cats ) ) {

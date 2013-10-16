@@ -8,7 +8,7 @@
 function in_bcg_loop(){
     global $bp;
 
-    return isset( $bp->bcg )? $bp->bcg->in_the_loop:false;
+    return isset( $bp->bcg )? $bp->bcg->in_the_loop : false;
 }
 //use it to mark t5he start of bcg post loop
 function bcg_loop_start(){
@@ -27,7 +27,7 @@ function bcg_loop_end(){
 //get post permalink which leads to group blog single post page
 function bcg_get_post_permalink( $post ){
     
-     return bp_get_group_permalink( groups_get_current_group() ).BCG_SLUG."/".$post->post_name;
+     return bp_get_group_permalink( groups_get_current_group() ). BCG_SLUG. '/' . $post->post_name;
 }
 /**
  * Generate Pagination Link for posts
@@ -69,11 +69,14 @@ function bcg_posts_pagination_count( $q ){
        $from_num  = bp_core_number_format( $start_num );
        $to_num    = bp_core_number_format( ( $start_num + ( $posts_per_page - 1 ) > $numposts ) ? $numposts : $start_num + ( $posts_per_page - 1 ) );
        $total     = bp_core_number_format( $numposts );
-
-        printf( __( 'Viewing posts %1$s to %2$s (of %3$s posts)', 'bcg' ), $from_num, $to_num, $total )."&nbsp;";
-        
-        if( bcg_is_category() )
-           printf( __( "In the category %s ","bcg" ), "<span class='bcg-cat-name'>". get_cat_name ( $q->query_vars['cat'] )."</span>" );?>
+       
+       //$taxonomy = get_taxonomy( bcg_get_taxonomy() );
+       $post_type_object = get_post_type_object( bcg_get_post_type() );
+       
+        printf( __( 'Viewing %1s %2$s to %3$s (of %4$s %1s)', 'bcg' ), $post_type_object->labels->name, $from_num, $to_num, $total )."&nbsp;";
+        //$term = get_term_name ( $q->query_vars['cat'] );
+        //if( bcg_is_category() )
+          // printf( __( "In the %s %s ","bcg" ), $taxonomy->label, "<span class='bcg-cat-name'>". $term_name ."</span>" );?>
 	<span class="ajax-loader"></span><?php
 }
 /**
@@ -89,30 +92,30 @@ function bcg_is_component(){
 }
 function bcg_is_single_post(){
     global $bp;
-    if ( bcg_is_component() &&!empty( $bp->action_variables[0] )&&( !in_array( $bp->action_variables[0],array( 'create','category' ) ) ) )
+    if ( bcg_is_component() && !empty( $bp->action_variables[0] ) && ( !in_array( $bp->action_variables[0], array( 'create', bcg_get_taxonomy() ) ) ) )
          return true;
 
 }
 //is bcg_home
 function bcg_is_home(){
     global $bp;
-    if ( bcg_is_component() &&empty( $bp->action_variables[0] ) )
+    if ( bcg_is_component() && empty( $bp->action_variables[0] ) )
          return true;
-
 }
+
 function is_bcg_pages(){
    return bcg_is_component();
 }
 function bcg_is_post_create(){
     global $bp;
-    if ( bcg_is_component() &&!empty( $bp->action_variables[0] )&&$bp->action_variables[0]=='create' )
+    if ( bcg_is_component() && !empty( $bp->action_variables[0] ) && $bp->action_variables[0] == 'create' )
          return true;
 
 }
 
 function bcg_is_category(){
     global $bp;
-    if ( bcg_is_component() &&!empty( $bp->action_variables[1])&&$bp->action_variables[0]=='category' )
+    if ( bcg_is_component() && !empty( $bp->action_variables[1]) && $bp->action_variables[0] == bcg_get_taxonomy() )
          return true;
 }
 //sub menu
@@ -130,13 +133,14 @@ function bcg_admin_form(){
     $group_id = bp_get_group_id();
 
     $selected_cats = bcg_get_categories( $group_id );
-    echo "<p>".__( "Check a category to assopciate the posts in this category with this group.","bcg" )."</p>";
+    $taxonomy = get_taxonomy( bcg_get_taxonomy() );
+    echo "<p>".sprintf( __( "Check a %s to assopciate the posts in this %s with this group.","bcg" ),$taxonomy->labels->singular_name, $taxonomy->labels->singular_name)."</p>";
 
     $cats = bcg_get_all_terms();
     if( is_array( $cats ) ){////it is sure but do not take risk
             foreach( $cats as $cat ){//show the form
                 $checked=0;
-	if( !empty( $selected_cats )&&in_array( $cat->term_id,$selected_cats ) )
+	if( !empty( $selected_cats )&& in_array( $cat->term_id, $selected_cats ) )
 			$checked = true;
 	?>
 	<label  style="padding:5px;display:block;float:left;">
@@ -170,8 +174,9 @@ function bcg_get_post_form( $group_id ){
             return;
         }
 
-    $all_cats = get_all_category_ids();
-    $cats     = array_diff( $all_cats,$cat_selected );
+    $all_cats = (array) bcg_get_all_terms();
+    $all_cats = wp_list_pluck($all_cats, 'term_id');
+    $cats     = array_diff( $all_cats, $cat_selected );
     
     //for form
     $url = bp_get_group_permalink( new BP_Groups_Group( $group_id ) ).BCG_SLUG."/create/";
@@ -183,7 +188,7 @@ function bcg_get_post_form( $group_id ){
         
     }
  
-    do_action( 'bcg_post_form',$cats,$url );//pass the categories as array and the url of the current page
+    do_action( 'bcg_post_form', $cats, $url );//pass the categories as array and the url of the current page
     
 }
 
