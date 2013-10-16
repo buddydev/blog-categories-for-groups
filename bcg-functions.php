@@ -43,7 +43,7 @@ function bcg_current_user_can_post() {
     $group_id = bp_get_current_group_id();
     $can_post = is_user_logged_in() && ( groups_is_user_admin( $user_id, $group_id ) || groups_is_user_mod( $user_id, $group_id ) );
 
-    return apply_filters('bcg_current_user_can_post', $can_post, $group_id, $user_id);
+    return apply_filters( 'bcg_current_user_can_post', $can_post, $group_id, $user_id);
 }
 
 function bcg_get_home_url( $group_id = null ) {
@@ -131,7 +131,7 @@ function bcg_get_query() {
 
 function bcg_get_taxonomy() {
 
-    return apply_filters('bcg_get_taxonomy', 'category');
+    return apply_filters( 'bcg_get_taxonomy', 'category');
 }
 
 function bcg_get_post_type() {
