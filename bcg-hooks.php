@@ -63,11 +63,11 @@ function bcg_fix_category_permalink( $catlink, $category_id ){
      if( !is_bcg_pages ()||!in_bcg_loop() )
          return $catlink;
      
-    $permalink =  bcg_get_home_url();
+    $permalink = trailingslashit( bcg_get_home_url() );
     //$cat       =  get_category( $category_id );
     //think about the cat permalink, do we need it or not?
 
-    return $permalink . bcg_get_taxonomy() . $category_id;//no need for category_name
+    return $permalink . bcg_get_taxonomy() .'/' . $category_id;//no need for category_name
 }
 
 the_permalink();

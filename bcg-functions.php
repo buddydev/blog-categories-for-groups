@@ -108,7 +108,7 @@ function bcg_get_query() {
         $qs['tax_query'] = array(
             array(
                 'taxonomy' => bcg_get_taxonomy(),
-                'terms' => $cats,
+                'terms' => (int) bp_action_variable(1),
                 'field' => 'id',
                 'operator' => 'IN',
             )
@@ -126,7 +126,7 @@ function bcg_get_query() {
     $qs ['paged'] = $paged;
 
    
-    return apply_filters("bcg_get_query", $query);
+    return apply_filters("bcg_get_query",  $qs);
 }
 
 function bcg_get_taxonomy() {
