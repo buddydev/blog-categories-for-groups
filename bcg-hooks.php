@@ -70,4 +70,3 @@ function bcg_fix_category_permalink( $catlink, $category_id ){
     return $permalink . bcg_get_taxonomy() .'/' . $category_id;//no need for category_name
 }
 
-the_permalink();

@@ -4,17 +4,38 @@
  * Load a template
  * @param type $template
  */
-function bcg_load_template($template) {
+function bcg_load_template( $template ) {
 
-    if (is_readable(STYLESHEETPATH . '/' . $template))
+    if ( is_readable( STYLESHEETPATH . '/' . $template ) )
         $load = STYLESHEETPATH . '/' . $template;
-    elseif (is_readable(TEMPLATEPATH . '/' . $template))
+    elseif ( is_readable(TEMPLATEPATH . '/' . $template ) )
         $load = TEMPLATEPATH . '/' . $template;
-    else
-        $load = BCG_PLUGIN_DIR . $template;
+    elseif ( is_readable( STYLESHEETPATH . '/bcg-theme-compat/' . $template ) )
+        $load = STYLESHEETPATH . '/bcg-theme-compat/' . $template;
+    elseif ( is_readable( TEMPLATEPATH . '/bcg-theme-compat/' . $template ) )
+        $load = TEMPLATEPATH . '/bcg-theme-compat/' . $template;
+    else //if not found, always load form 
+        $load = BCG_PLUGIN_DIR . 'bcg-theme-compat/' . $template;
 
     include_once $load;
 }
+
+//check if main file should be loaded from theme or plugin,. only affects loading of bcg/index.php
+function bcg_is_using_theme_compat(){
+    static $using_compat;
+    
+    if( isset ( $using_compat ) )
+        return $using_compat;
+    
+    if( file_exists( TEMPLATEPATH . '/bcg' ) || file_exists( STYLESHEETPATH . '/bcg' ) )
+            $using_compat = false;
+    
+    else
+        $using_compat = true;
+    
+    return $using_compat;
+}
+
 
 /**
  *
@@ -143,4 +164,14 @@ function bcg_get_all_terms() {
 
     $cats = get_terms( bcg_get_taxonomy(), array( 'fields' => 'all', 'get' => 'all' ) );
     return $cats;
+}
+
+//this function returns the generated content for blog categories plugin
+function bcg_get_page_content(){
+    
+
+ 
+    bcg_load_template('bcg/home.php');
+    
+   
 }

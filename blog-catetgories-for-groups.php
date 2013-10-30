@@ -165,8 +165,20 @@ class BCG_View_Helper{
     //load the blog home page for group
     function screen_group_blog(){
         //load template
-        bp_core_load_template( apply_filters( 'groups_template_group_blog', 'bcg/home' ) );
+        if( !bcg_is_using_theme_compat()){
+        
+            bp_core_load_template( apply_filters( 'groups_template_group_blog', 'bcg/home' ) );
+            
+        }
+        else{
+            add_action( 'bp_template_content', 'bcg_get_page_content' );
+            bp_core_load_template(  'groups/single/plugins'  ); 
+            
+           
+        }
+        
     }
+    
     
     //for single post screen
     function screen_group_blog_single_post(){
