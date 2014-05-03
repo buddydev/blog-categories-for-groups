@@ -73,7 +73,7 @@ function bcg_posts_pagination_count( $q ){
        //$taxonomy = get_taxonomy( bcg_get_taxonomy() );
        $post_type_object = get_post_type_object( bcg_get_post_type() );
        
-        printf( __( 'Viewing %1s %2$s to %3$s (of %4$s %1s)', 'bcg' ), $post_type_object->labels->name, $from_num, $to_num, $total )."&nbsp;";
+        printf( __( 'Viewing %1s %2$s to %3$s (of %4$s )', 'bcg' ), $post_type_object->labels->name, $from_num, $to_num, $total )."&nbsp;";
         //$term = get_term_name ( $q->query_vars['cat'] );
         //if( bcg_is_category() )
           // printf( __( "In the %s %s ","bcg" ), $taxonomy->label, "<span class='bcg-cat-name'>". $term_name ."</span>" );?>
