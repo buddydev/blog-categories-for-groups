@@ -6,9 +6,10 @@
  * Author URI:http://buddydev.com/members/sbrajesh/
  * Description: Allow Group admins;/mods to associate blog categories with groups
  * Version: 1.1.1
- * Tested with WordPress 3.9+BuddyPress 2.0.1
+ * Tested with WordPress 3.9+BuddyPress 2.0.2
  * License: GPL
- * Date: May 3rd, 2014
+ * Last Updated: May 3rd, 2014
+ * Release date: Auhust 12, 2014
  */
 
 if( !defined( 'BCG_SLUG' ) )
