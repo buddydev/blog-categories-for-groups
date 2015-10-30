@@ -17,6 +17,8 @@ class BCG_Group_Extension extends BP_Group_Extension {
 
 		$this->create_step_position = 21;
 		$this->nav_item_position = 31;
+		
+		do_action_ref_array( 'bcg_created_group_extension', array( &$this ) );
 	}
 
 //on group crate step
