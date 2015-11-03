@@ -193,3 +193,39 @@ function bcg_get_all_terms() {
 function bcg_get_page_content() {
 	bcg_load_template( 'bcg/home.php' );
 }
+
+/**
+ * Generate pagination links
+ * 
+ * @global type $wp_query
+ */
+function bcg_paginate( $q ) {
+	
+    /// get total number of pages
+    
+    $total = $q->max_num_pages;
+	
+    // only bother with the rest if we have more than 1 page!
+    if ( $total > 1 )  {
+         // get the current page
+		if ( !$current_page = get_query_var( 'paged' ) )
+			 $current_page = 1;
+		
+         // structure of “format” depends on whether we’re using pretty permalinks
+        $perma_struct = get_option( 'permalink_structure' );
+		
+        $format = empty( $perma_struct ) ? '&page=%#%' : 'page/%#%/';
+        $base = trailingslashit( bp_get_group_permalink( groups_get_current_group() ) . BCG_SLUG);
+        // echo $base;
+       
+          
+		echo paginate_links(array(
+			'base' => $base . '%_%',
+			'format' => $format,
+			'current' => $current_page,
+			'total' => $total,
+			'mid_size' => 4,
+			'type' => 'list'
+         ));
+    }
+}

@@ -43,7 +43,7 @@
         do_action( 'bp_after_group_blog_content' ) ;
         bcg_loop_end();//please do not remove it
 	?>
-
+ <?php bcg_paginate( $q ); ?>
 <?php else: ?>
 
 	<div id="message" class="info">
