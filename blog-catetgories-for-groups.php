@@ -52,10 +52,10 @@ class BCGroups_Helper {
 	public function load_extension() {
 		
 		$files = array(
-			'bcg-functions.php',
-			'template-tags.php',
-			'bcg-hooks.php',
-			'bcg-admin.php',
+			'core/bcg-functions.php',
+			'core/template-tags.php',
+			'core/bcg-hooks.php',
+			'core/bcg-admin.php',
 		);
 
 		foreach ( $files as $file ) {
