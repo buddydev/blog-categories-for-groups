@@ -53,7 +53,7 @@ if ( bcg_get_post_type() == 'post' ) {
 
 function bcg_fix_permalink( $post_link, $id, $leavename ) {
 	
-	if ( ! is_bcg_pages() || ! in_bcg_loop() ) {
+	if ( ! bcg_is_component() || ! in_bcg_loop() ) {
 		return $post_link;
 	}
 
@@ -67,7 +67,7 @@ add_filter( 'category_link', 'bcg_fix_category_permalink', 10, 2 );
 
 function bcg_fix_category_permalink ( $catlink, $category_id ) {
 	
-	if ( ! is_bcg_pages() || ! in_bcg_loop() ) {
+	if ( ! bcg_is_component() || ! in_bcg_loop() ) {
 		return $catlink;
 	}
 

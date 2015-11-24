@@ -1,43 +1,75 @@
 <?php
-
 /**
- * Load a template
- * @param type $template
+ * Are we dealing with blog categories pages?
+ * @return type 
  */
-function bcg_load_template( $template ) {
+function bcg_is_component () {
+	
+	$bp = buddypress();
 
-	if ( is_readable( STYLESHEETPATH . '/' . $template ) ) {
-		$load = STYLESHEETPATH . '/' . $template;
-	} elseif ( is_readable( TEMPLATEPATH . '/' . $template ) ) {
-		$load = TEMPLATEPATH . '/' . $template;
-	} elseif ( is_readable( STYLESHEETPATH . '/bcg-theme-compat/' . $template ) ) {
-		$load = STYLESHEETPATH . '/bcg-theme-compat/' . $template;
-	} elseif ( is_readable( TEMPLATEPATH . '/bcg-theme-compat/' . $template ) ) {
-		$load = TEMPLATEPATH . '/bcg-theme-compat/' . $template;
-	} else { //if not found, always load form 
-		$load = BCG_PLUGIN_DIR . 'bcg-theme-compat/' . $template;
+	if ( bp_is_current_component( $bp->groups->slug ) && bp_is_current_action( BCG_SLUG ) ) {
+		return true;
+	}
+
+	return false;
+}
+/**
+ * Are we looking at the blog categories landing page
+ * 
+ * @return boolean
+ */
+function bcg_is_home() {
+	
+	$bp = buddypress();
+
+	if ( bcg_is_component() && empty( $bp->action_variables[0] ) ) {
+		return true;
 	}
 	
-	include_once $load;
+	return false;
+	
+}
+/**
+ * Is it single post?
+ * 
+ * @return boolean
+ */
+function bcg_is_single_post() {
+	$bp = buddypress();
+
+	if ( bcg_is_component() && ! empty( $bp->action_variables[0] ) && ( ! in_array( $bp->action_variables[0], array( 'create', 'page', 'edit', bcg_get_taxonomy() ) ) ) ) {
+		return true;
+	}
+	return false;
+}
+/**
+ * Is it post create csreen
+ * 
+ * @return boolean
+ */
+
+function bcg_is_post_create() {
+	$bp = buddypress();
+
+	if ( bcg_is_component() && ! empty( $bp->action_variables[0] ) && $bp->action_variables[0] == 'create' ) {
+		return true;
+	}
+	
+	return false;
+}
+/**
+ * Is it single category view
+ * 
+ * @return boolean
+ */
+function bcg_is_category () {
+	$bp = buddypress();
+
+	if ( bcg_is_component() && !empty( $bp->action_variables[1] ) && $bp->action_variables[0] == bcg_get_taxonomy() ) {
+		return true;
+	}
 }
 
-//check if main file should be loaded from theme or plugin,. only affects loading of bcg/index.php
-function bcg_is_using_theme_compat () {
-	
-	static $using_compat;
-
-	if ( isset( $using_compat ) ) {
-		return $using_compat;
-	}
-
-	if ( file_exists( TEMPLATEPATH . '/bcg' ) || file_exists( STYLESHEETPATH . '/bcg' ) ) {
-		$using_compat = false;
-	} else {
-		$using_compat = true;
-	}
-	
-	return $using_compat;
-}
 
 /**
  *
@@ -59,32 +91,6 @@ function bcg_is_disabled_for_group() {
 	return apply_filters( 'bcg_is_disabled_for_group', bcg_is_disabled( $group_id ) );
 }
 
-/**
- * Can the current user post to group blog
- * @global type $bp
- * @return type 
- */
-function bcg_current_user_can_post () {
-	
-	$user_id = bp_loggedin_user_id();
-	$group_id = bp_get_current_group_id();
-	
-	$can_post = is_user_logged_in() && ( groups_is_user_admin( $user_id, $group_id ) || groups_is_user_mod( $user_id, $group_id ) );
-
-	return apply_filters( 'bcg_current_user_can_post', $can_post, $group_id, $user_id );
-}
-
-function bcg_get_home_url ( $group_id = null ) {
-	
-	if ( ! empty( $group_id ) ) {
-		$group = new BP_Groups_Group( $group_id );
-	} else {
-		$group = groups_get_current_group();
-	}
-	
-	return apply_filters( 'bcg_home_url', bp_get_group_permalink( $group ) . BCG_SLUG );
-}
-
 function bcg_is_disabled( $group_id ) {
 	
 	if ( empty( $group_id ) ) {
@@ -94,83 +100,6 @@ function bcg_is_disabled( $group_id ) {
 	$is_disabled = groups_get_groupmeta( $group_id, 'bcg_is_active' );
 	
 	return apply_filters( 'bcg_is_disabled', intval( $is_disabled ), $group_id );
-}
-
-//call me business function
-function bcg_get_categories( $group_id ) {
-	
-	$cats = groups_get_groupmeta( $group_id, 'group_blog_cats' );
-	return maybe_unserialize( $cats );
-}
-
-//update table
-function bcg_update_categories( $group_id, $cats ) {
-	
-	$cats = maybe_serialize( $cats );
-	
-	return groups_update_groupmeta( $group_id, 'group_blog_cats', $cats );
-}
-
-//get the appropriate query for various screens
-function bcg_get_query (){
-	
-	$bp = buddypress();
-	
-	$cats = bcg_get_categories( $bp->groups->current_group->id );
-
-	$qs = array(
-		'post_type'		=> bcg_get_post_type(),
-		'post_status'	=> 'publish'
-	);
-	
-	if ( empty( $cats ) ) {
-		$qs ['name'] = -1; //we know it will not find anything
-	}
-
-	if ( bcg_is_single_post() ) {
-		
-		$slug = $bp->action_variables[0];
-		
-		$qs['name'] = $slug;
-		//tax query
-		$qs['tax_query'] = array(
-			array(
-				'taxonomy'	=> bcg_get_taxonomy(),
-				'terms'		=> $cats,
-				'field'		=> 'id',
-				'operator'	=> 'IN',
-			)
-		);
-	}
-	
-	$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
-	
-	if ( bcg_is_category() ) {
-		
-		$qs['tax_query'] = array(
-			array(
-				'taxonomy'	=> bcg_get_taxonomy(),
-				'terms'		=> (int) bp_action_variable( 1 ),
-				'field'		=> 'id',
-				'operator'	=> 'IN',
-			)
-		);
-	} else {
-		
-		$qs['tax_query'] = array(
-			array(
-				'taxonomy'	=> bcg_get_taxonomy(),
-				'terms'		=> $cats,
-				'field'		=> 'id',
-				'operator'	=> 'IN'
-			)
-		);
-	}
-	
-	$qs ['paged'] = $paged;
-
-
-	return apply_filters( "bcg_get_query", $qs );
 }
 
 function bcg_get_taxonomy() {
@@ -189,43 +118,37 @@ function bcg_get_all_terms() {
 	return $cats;
 }
 
-//this function returns the generated content for blog categories plugin
-function bcg_get_page_content() {
-	bcg_load_template( 'bcg/home.php' );
+
+//call me business function
+function bcg_get_categories( $group_id ) {
+	
+	$cats = groups_get_groupmeta( $group_id, 'group_blog_cats' );
+	return maybe_unserialize( $cats );
+}
+
+//update table
+function bcg_update_categories( $group_id, $cats ) {
+	
+	$cats = maybe_serialize( $cats );
+	
+	return groups_update_groupmeta( $group_id, 'group_blog_cats', $cats );
 }
 
 /**
- * Generate pagination links
+ * Get BCG landing page url
  * 
- * @global type $wp_query
+ * @param type $group_id
+ * @return type
  */
-function bcg_paginate( $q ) {
+function bcg_get_home_url ( $group_id = null ) {
 	
-    /// get total number of pages
-    
-    $total = $q->max_num_pages;
+	if ( ! empty( $group_id ) ) {
+		$group = new BP_Groups_Group( $group_id );
+	} else {
+		$group = groups_get_current_group();
+	}
 	
-    // only bother with the rest if we have more than 1 page!
-    if ( $total > 1 )  {
-         // get the current page
-		if ( !$current_page = get_query_var( 'paged' ) )
-			 $current_page = 1;
-		
-         // structure of “format” depends on whether we’re using pretty permalinks
-        $perma_struct = get_option( 'permalink_structure' );
-		
-        $format = empty( $perma_struct ) ? '&page=%#%' : 'page/%#%/';
-        $base = trailingslashit( bp_get_group_permalink( groups_get_current_group() ) . BCG_SLUG);
-        // echo $base;
-       
-          
-		echo paginate_links(array(
-			'base' => $base . '%_%',
-			'format' => $format,
-			'current' => $current_page,
-			'total' => $total,
-			'mid_size' => 4,
-			'type' => 'list'
-         ));
-    }
+	return apply_filters( 'bcg_home_url', bp_get_group_permalink( $group ) . BCG_SLUG );
 }
+
+

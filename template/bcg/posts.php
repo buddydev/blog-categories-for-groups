@@ -43,7 +43,16 @@
         do_action( 'bp_after_group_blog_content' ) ;
         bcg_loop_end();//please do not remove it
 	?>
- <?php bcg_paginate( $q ); ?>
+	<div class="pagination no-ajax">
+		<div id="posts-count" class="pag-count">
+			<?php bcg_posts_pagination_count( $q ) ?>
+		</div>
+
+		<div id="posts-pagination" class="pagination-links">
+			<?php bcg_pagination( $q ) ?>
+		</div>
+	</div>
+
 <?php else: ?>
 
 	<div id="message" class="info">

@@ -92,63 +92,6 @@ function bcg_posts_pagination_count( $q ) {
 	<span class="ajax-loader"></span><?php
 }
 
-/**
- * Are we dealing with blog categories pages?
- * @return type 
- */
-function bcg_is_component () {
-	
-	$bp = buddypress();
-
-	if ( bp_is_current_component( $bp->groups->slug ) && bp_is_current_action( BCG_SLUG ) ) {
-		return true;
-	}
-
-	return false;
-}
-
-function bcg_is_single_post() {
-	$bp = buddypress();
-
-	if ( bcg_is_component() && !empty( $bp->action_variables[0] ) && (!in_array( $bp->action_variables[0], array( 'create', bcg_get_taxonomy() ) ) ) ) {
-		return true;
-	}
-	return false;
-}
-
-//is bcg_home
-function bcg_is_home() {
-	$bp = buddypress();
-
-	if ( bcg_is_component() && empty( $bp->action_variables[0] ) ) {
-		return true;
-	}
-	
-	return false;
-	
-}
-
-function is_bcg_pages() {
-	return bcg_is_component();
-}
-
-function bcg_is_post_create() {
-	$bp = buddypress();
-
-	if ( bcg_is_component() && ! empty( $bp->action_variables[0] ) && $bp->action_variables[0] == 'create' ) {
-		return true;
-	}
-	
-	return false;
-}
-
-function bcg_is_category () {
-	$bp = buddypress();
-
-	if ( bcg_is_component() && !empty( $bp->action_variables[1] ) && $bp->action_variables[0] == bcg_get_taxonomy() ) {
-		return true;
-	}
-}
 
 //sub menu
 function bcg_get_options_menu() {
@@ -204,7 +147,7 @@ function bcg_admin_form() {
 }
 
 //post form if one quick pot is installed
-function bcg_get_post_form( $group_id ) {
+function bcg_show_post_form( $group_id ) {
 	
 	$bp = buddypress();
 
@@ -234,3 +177,4 @@ function bcg_get_post_form( $group_id ) {
 
 	do_action( 'bcg_post_form', $cats, $url ); //pass the categories as array and the url of the current page
 }
+
