@@ -151,4 +151,17 @@ function bcg_get_home_url ( $group_id = null ) {
 	return apply_filters( 'bcg_home_url', bp_get_group_permalink( $group ) . BCG_SLUG );
 }
 
-
+/**
+ * Get psot by slug
+ * 
+ * @global type $wpdb
+ * @param string $slug
+ */
+function bcg_get_post_by_slug( $slug ) {
+	global $wpdb;
+	
+	$query = "SELECT * FROM $wpdb->posts WHERE post_name = %s AND post_type = %s LIMIT 1";
+	$post = $wpdb->get_row( $wpdb->prepare( $query, $slug, bcg_get_post_type() ) );
+	
+	return $post;
+}

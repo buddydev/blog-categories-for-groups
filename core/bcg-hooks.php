@@ -77,3 +77,27 @@ function bcg_fix_category_permalink ( $catlink, $category_id ) {
 
 	return $permalink . bcg_get_taxonomy() . '/' . $category_id; //no need for category_name
 }
+
+add_filter( 'wp_title', 'bcg_fix_page_title', 200, 3 );
+//for title fix
+function bcg_fix_page_title( $title, $sep, $seplocation ) {
+	
+	if ( ! bcg_is_single_post() ) {
+		return $title;
+	}
+	
+	$post = bcg_get_post_by_slug( bp_action_variable(0) );
+	
+	$post_title =  $post->post_title;
+	
+	if ( 'right' == $seplocation ) { // sep on right, so reverse the order
+		$title       =  $post_title . " $sep " . $title;
+	} else {
+		$title =  $title . " $sep " . $post_title;
+	}
+	
+	return $title;
+	
+	
+	
+}
