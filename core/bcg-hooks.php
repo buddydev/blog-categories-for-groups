@@ -40,6 +40,23 @@ function bcg_fix_comment_form ( $post_id ) {
 	<input type='hidden' name='redirect_to' value="<?php echo esc_url( $permalink ); ?>" />
 	<?php
 }
+//fix to disable/reenable buddypress comment open/close filter
+function bcg_disable_bp_comment_filter() {
+    
+    if( has_filter( 'comments_open', 'bp_comments_open' ) ) {
+        remove_filter( 'comments_open', 'bp_comments_open', 10, 2 );
+	}	
+}
+add_action( 'bp_before_group_blog_post_content', 'bcg_disable_bp_comment_filter' );
+
+function bcg_enable_bp_comment_filter() {
+    
+    if( function_exists( 'bp_comments_open' ) ) {
+		add_filter( 'comments_open', 'bp_comments_open', 10, 2 );
+	}	
+}
+
+add_action( 'bp_after_group_blog_content', 'bcg_enable_bp_comment_filter' );
 
 /* fixing permalinks for posts/categories inside the bcg loop */
 
