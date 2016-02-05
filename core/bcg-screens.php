@@ -66,12 +66,12 @@ class BCG_Screen_Helper {
 		//switch based on current view
 		$current_action = bp_action_variable( 0 );
 		
-		if( $current_action == 'create' ) {
+		if ( $current_action == 'create' ) {
 			$this->view_create();
 			
 		} elseif ( bcg_is_single_post() ) {
 			$this->view_single();
-		}else {
+		} else {
 			$this->view_blog();
 		}
 		//just load the plugins template, above functions will attach the content generators

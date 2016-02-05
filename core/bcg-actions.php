@@ -17,7 +17,7 @@ class BCG_Actions {
         /**
          * Register form for new/edit resume
          */
-        if( is_admin() ) {
+        if ( is_admin() ) {
             return;
 		}
         
@@ -33,7 +33,7 @@ class BCG_Actions {
 	 */
     public static function get_instance() {
         
-        if( ! isset ( self::$instance ) ) {
+        if ( ! isset ( self::$instance ) ) {
             self::$instance = new self();
 		}
 		
@@ -64,11 +64,11 @@ class BCG_Actions {
           
         $post_id = bp_action_variable( 1 );
 		
-        if( ! $post_id ) {
+        if ( ! $post_id ) {
             return;
 		}
         
-        if( bcg_user_can_delete( $post_id,  get_current_user_id() ) ) {
+        if ( bcg_user_can_delete( $post_id,  get_current_user_id() ) ) {
 
             wp_delete_post( $post_id, true );
             bp_core_add_message ( __( 'Post deleted successfully' ), 'blog-categories-for-groups' );
@@ -87,17 +87,17 @@ class BCG_Actions {
      */
     public function publish() {
 		
-       if( !  bcg_is_component() || ! bp_is_action_variable( 'publish', 0 ) ) {
+       if ( !  bcg_is_component() || ! bp_is_action_variable( 'publish', 0 ) ) {
            return;
 	   }
            
         $id = bp_action_variable(1);
 		
-        if( ! $id ) {
+        if ( ! $id ) {
             return;
 		}
        
-        if( bcg_user_can_publish( get_current_user_id(), $id ) ) {
+        if ( bcg_user_can_publish( get_current_user_id(), $id ) ) {
 			
             wp_publish_post( $id );//change status to publish         
             bp_core_add_message( __( 'Post Published', 'blog-categories-for-groups' ) );   
@@ -110,17 +110,17 @@ class BCG_Actions {
      */
     public function unpublish() {
 		
-         if( ! bcg_is_component() || ! bp_is_action_variable( 'unpublish', 0 ) ) {
+         if ( ! bcg_is_component() || ! bp_is_action_variable( 'unpublish', 0 ) ) {
            return;
 		 }
 		 
         $id = bp_action_variable( 1 );
         
-		if( ! $id ) {
+		if ( ! $id ) {
             return;
 		}
          
-		if( bcg_user_can_unpublish( get_current_user_id(), $id ) ) {
+		if ( bcg_user_can_unpublish( get_current_user_id(), $id ) ) {
                
 			$post = get_post( $id, ARRAY_A );
 			$post['post_status'] = 'draft';
@@ -151,12 +151,12 @@ class BCG_Actions {
 			
 			$url = bcg_get_home_url();
 			
-		} elseif( $post_redirect == 'single' && get_post_status( $post_id ) == 'publish' ) {
+		} elseif ( $post_redirect == 'single' && get_post_status( $post_id ) == 'publish' ) {
 			//go to single post
 			$url = get_permalink( $post_id );
 		}
 		
-		if( $url ){
+		if ( $url ){
 			bp_core_redirect( $url );
 		}
 	}
@@ -169,7 +169,7 @@ class BCG_Actions {
 	public function register_form() {
 		
 		//make sure the Front end simple post plugin is active
-		if( ! function_exists( 'bp_new_simple_blog_post_form' ) )
+		if ( ! function_exists( 'bp_new_simple_blog_post_form' ) )
 			return;
 
 		$post_status = 'draft';

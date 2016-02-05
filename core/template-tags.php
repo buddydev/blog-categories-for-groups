@@ -131,7 +131,7 @@ function bcg_admin_form() {
 			<?php
 		}
 		
-	}else {
+	} else {
 		
 		?>
 

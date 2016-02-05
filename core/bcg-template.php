@@ -7,15 +7,10 @@
 function bcg_load_template( $template ) {
 
     if ( file_exists( STYLESHEETPATH . '/bcg/' . $template ) ) {
-     
-		include STYLESHEETPATH . '/bcg/' . $template ;
-			
+   		include STYLESHEETPATH . '/bcg/' . $template ;
 	} elseif ( file_exists( TEMPLATEPATH . '/bcg/' . $template ) ) {
-     
 		include TEMPLATEPATH . '/bcg/' . $template ;
-		
 	} else {
-		
         include BCG_PLUGIN_DIR . 'template/bcg/' . $template;
 	}	
 }
@@ -37,7 +32,6 @@ function bcg_get_query (){
 	}
 
 	if ( bcg_is_single_post() ) {
-		
 		$slug = $bp->action_variables[0];
 		
 		$qs['name'] = $slug;
