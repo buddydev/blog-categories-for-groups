@@ -6,10 +6,10 @@
  * Plugin URI: http://buddydev.com/plugins/blog-categories-for-groups/
  * Author URI: http://buddydev.com/members/sbrajesh/
  * Description: Allow Group admins;/mods to associate blog categories with groups
- * Version: 1.2.1
+ * Version: 1.2.2
  * License: GPL
- * Last Updated: October 30, 2015
- * Tested with WordPress 4.3 + BuddyPress 2.3.4
+ * Last Updated: February5, 2016
+ * Tested with WordPress 4.4.1 + BuddyPress 2.4.3
  * 
  */
 
