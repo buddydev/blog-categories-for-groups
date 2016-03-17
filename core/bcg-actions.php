@@ -40,8 +40,7 @@ class BCG_Actions {
         if ( ! isset ( self::$instance ) ) {
             self::$instance = new self();
 		}
-		
-        return self::$instance;
+	    return self::$instance;
     }
     
     /**
@@ -82,7 +81,6 @@ class BCG_Actions {
             exit( 0 );  
 			
         } else {
-         
             bp_core_add_message ( __( 'You should not perform unauthorized actions', 'blog-categories-for-groups' ),'error');
         }
         
@@ -96,7 +94,7 @@ class BCG_Actions {
            return;
 	   }
            
-        $id = bp_action_variable(1);
+        $id = bp_action_variable( 1 );
 		
         if ( ! $id ) {
             return;
@@ -162,7 +160,7 @@ class BCG_Actions {
 			$url = get_permalink( $post_id );
 		}
 		
-		if ( $url ){
+		if ( $url ) {
 			bp_core_redirect( $url );
 		}
 	}
@@ -234,7 +232,11 @@ class BCG_Actions {
 
 	public function update_activity_args( $args ) {
 
-		if( ! $_REQUEST['custom_fields']['_is_bcg_post'] && ( $args['component'] !== 'blogs' || $args['type'] !=='new_blog_post' ) ) {
+		if ( ! isset( $_REQUEST['custom_fields'] ) ) {
+			return $args;
+		}
+
+		if ( ! $_REQUEST['custom_fields']['_is_bcg_post'] && ( $args['component'] !== 'blogs' || $args['type'] !== 'new_blog_post' ) ) {
 			return $args;
 		}
 
@@ -258,85 +260,3 @@ class BCG_Actions {
 }
 //instantiate
 BCG_Actions::get_instance();
-
-add_filter( 'bp_activity_get_activity_id', 'bcg_update_group_post_activity', 0, 2);
-function bcg_update_group_post_activity( $id, $args ) {
-
-
-	if ( $args['component'] == 'blogs' && $args['type'] == 'new_blog_post' ) {
-
-		unset( $args['item_id']);
-		//now set component to groups
-		$args['component'] = buddypress()->groups->id;
-
-		$new_id = bp_activity_get_activity_id( $args );
-
-		if( $new_id ) {
-			$id = $new_id;
-		}
-
-
-	}
-
-	return $id;
-}
-
-add_action( 'bp_activity_post_type_unpublished', 'bcg_delete_group_post_activity', 0 , 3 );
-function bcg_delete_group_post_activity( $delete_activity_args, $post, $deleted ) {
-
-	if( $delete_activity_args['component'] == 'blogs' && $delete_activity_args['type'] == "new_blog_post") {
-
-		unset( $delete_activity_args['item_id'] );
-		$delete_activity_args['component'] = buddypress()->groups->id;
-		$deleted = bp_activity_delete( $delete_activity_args );
-
-	}
-	return $deleted;
-
-}
-
-function bcg_format_activity_action( $action, $activity  ) {
-
-	$user_link = bp_core_get_userlink( $activity->user_id );
-
-	//$user_name = bp_core_get_user_displayname( $activity->user_id );
-
-	if ( isset( $activity->post_url ) ) {
-		$post_url = $activity->post_url;
-	}
-
-	$post_title = bp_activity_get_meta( $activity->id, 'post_title' );
-
-	if ( empty( $post_title ) ) {
-		// Defaults to no title.
-		$post_title = esc_html__( '(no title)', 'blog-categories-for-groups' );
-
-	}else {
-		$post_title = esc_html__( $post_title, 'blog-categories-for-groups' );
-	}
-
-	$group = groups_get_group( array( 'group_id' => $activity->item_id ) );
-	$group_permalink = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug;
-
-	$post_link  = '<a href="' . esc_url( $post_url ) . '">' . $post_title . '</a>';
-	$group_link =  '<a href="' . esc_url( $group_permalink ) . '">' . esc_html( $group->name ) . '</a>';
-
-	$action = sprintf( __( '%1$s wrote a new post in %2$s, %3$s', 'blog-categories-for-groups' ), $user_link, $group_link, $post_link );
-
-	return $action;
-}
-
-add_action( 'groups_register_activity_actions', 'bcg_register_group_activity_action' );
-function bcg_register_group_activity_action() {
-
-	$bp = buddypress();
-	bp_activity_set_action(
-		$bp->groups->id,
-		'new_blog_post',
-		__( 'Group details edited', 'buddypress' ),
-		'bcg_format_activity_action',
-		__( 'Group Updates', 'buddypress' ),
-		array( 'activity', 'group', 'member', 'member_groups' )
-	);
-
-}

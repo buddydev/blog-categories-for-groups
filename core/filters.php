@@ -7,7 +7,7 @@ function bcg_get_editable_post_id( $id ) {
 	$group_id = bp_get_current_group_id();
 
 	if( ! $post_id || ! is_numeric( $post_id ) || ! bcg_user_can_edit( $post_id, $user_id, $group_id  ) ) {
-		return;
+		return $id;
 	}
 
 	if ( bcg_is_component() && ( $action == 'edit' ) && $post_id ) {

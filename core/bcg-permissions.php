@@ -11,7 +11,7 @@ function bcg_current_user_can_post () {
 	$group_id = bp_get_current_group_id();
 	$can_post = false;
 
-	if( is_user_logged_in() && ( bcg_get_option('post_cap') == 'admin' && groups_is_user_admin( $user_id, $group_id ) ) ) {
+	if ( is_user_logged_in() && ( bcg_get_option( 'post_cap' ) == 'admin' && groups_is_user_admin( $user_id, $group_id ) ) ) {
 		$can_post = true;
 	}
 
