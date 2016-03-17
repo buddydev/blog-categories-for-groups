@@ -68,8 +68,9 @@ class BCG_Screen_Helper {
 		
 		if ( $current_action == 'create' ) {
 			$this->view_create();
-			
-		} elseif ( bcg_is_single_post() ) {
+		} elseif( $current_action == 'edit' ) {
+			$this->view_edit();
+		}elseif ( bcg_is_single_post() ) {
 			$this->view_single();
 		} else {
 			$this->view_blog();
@@ -91,6 +92,11 @@ class BCG_Screen_Helper {
 	
 	}
 
+	public function view_edit () {
+
+		add_action( 'bp_template_content', array( $this, 'get_edit_post_contents' ) );
+
+	}
 	//for single post screen
 	public function view_single () {
 		

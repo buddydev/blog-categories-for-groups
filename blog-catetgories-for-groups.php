@@ -62,14 +62,15 @@ class BCGroups_Helper {
 	 * Setup basic hooks
 	 */
 	private function setup_hooks() {
-		
-		add_action( 'bp_include', array( $this, 'load_extension' ) );
 
+		register_activation_hook( __FILE__, array( $this, 'install' ) );
+
+		add_action( 'bp_include', array( $this, 'load_extension' ) );
 		//load javascript for comment reply
 		add_action( 'bp_enqueue_scripts', array( $this, 'enqueue_script' ) );
-
 		//load localization files
 		add_action( 'bp_init', array( $this, 'load_textdomain' ), 2 );
+
 	}
 
 	/**
@@ -86,7 +87,12 @@ class BCGroups_Helper {
 			'core/bcg-screens.php',
 			'core/bcg-template.php',
 			'core/bcg-admin.php',
+			'core/filters.php',
 		);
+
+		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+			$files[] =  'admin/admin.php';
+		}
 
 		foreach ( $files as $file ) {
 			require_once $this->path . $file;
@@ -112,6 +118,39 @@ class BCGroups_Helper {
 		}
 	}
 
+	public function install() {
+
+		$default = array(
+			'post_type'				=> 'post',
+			'post_status'			=> 'publish',
+			'comment_status'		=> 'open',
+			'show_comment_option'	=> 1,
+			'custom_field_title'	=> '',
+			'enable_taxonomy'		=> 1,
+			'allowed_taxonomies'	=> 1,
+			'enable_category'		=> 1,
+			'enable_tags'			=> 1,
+			'show_posts_on_profile' => false,
+			'limit_no_of_posts'		=> false,
+			'max_allowed_posts'		=> 20,
+			'publish_cap'			=> 'read',
+			'allow_unpublishing'	=> 1,
+			'post_cap'				=> 'read',
+			'allow_edit'			=> 1,
+			'allow_delete'			=> 1,
+			//'enabled_tags'		=> 1,
+			//'taxonomies'		    => array( 'category' ),
+			'allow_upload'		    => false,
+			'max_upload_count'	    => 2
+		);
+
+		if( ! get_option( 'bcg-settings' ) ) {
+			add_option( 'bcg-settings', $default  );
+		}
+
+	}
+
+	
 }
 
 //initialize

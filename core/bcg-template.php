@@ -5,7 +5,7 @@
  * @param type $template
  */
 function bcg_load_template( $template ) {
-
+	
     if ( file_exists( STYLESHEETPATH . '/bcg/' . $template ) ) {
    		include STYLESHEETPATH . '/bcg/' . $template ;
 	} elseif ( file_exists( TEMPLATEPATH . '/bcg/' . $template ) ) {
@@ -26,7 +26,10 @@ function bcg_get_query (){
 		'post_type'		=> bcg_get_post_type(),
 		'post_status'	=> 'publish'
 	);
-	
+
+	if( is_super_admin() ||  groups_is_user_admin( get_current_user_id(), $bp->groups->current_group->id ) ) {
+		$qs['post_status'] = 'any';
+	}
 	if ( empty( $cats ) ) {
 		$qs ['name'] = -1; //we know it will not find anything
 	}

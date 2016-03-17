@@ -34,8 +34,13 @@
             <div class="entry">
                 <?php the_excerpt( ); ?>
             </div>
-
-            <p class="postmetadata"><span class="tags"><?php the_tags( __( 'Tags: ', 'bcg' ), ', ', '<br />'); ?></span> <span class="comments"><?php comments_popup_link( __( 'No Comments &#187;', 'bcg' ), __( '1 Comment &#187;', 'bcg' ), __( '% Comments &#187;', 'bcg' ) ); ?></span></p>
+	        <div class="post-actions">
+		        <?php $post_id = get_the_ID(); ?>
+		        <?php echo bcg_get_post_publish_unpublish_link( $post_id );?>
+		        <?php echo bcg_get_edit_link( $post_id ); ?>
+		        <?php echo bcg_get_delete_link( $post_id ); ?>
+	        </div>
+	        <p class="postmetadata"><span class="tags"><?php the_tags( __( 'Tags: ', 'bcg' ), ', ', '<br />'); ?></span> <span class="comments"><?php comments_popup_link( __( 'No Comments &#187;', 'bcg' ), __( '1 Comment &#187;', 'bcg' ), __( '% Comments &#187;', 'bcg' ) ); ?></span></p>
         </div>
     </div>
 	<?php endwhile;?>

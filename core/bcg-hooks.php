@@ -114,7 +114,5 @@ function bcg_fix_page_title( $title, $sep, $seplocation ) {
 	}
 	
 	return $title;
-	
-	
-	
+
 }

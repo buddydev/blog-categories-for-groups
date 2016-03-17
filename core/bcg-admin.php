@@ -1,4 +1,7 @@
 <?php
+if ( ! class_exists('BP_Group_Extension' ) ) {
+	return ;//do not load further
+}
 
 //handle everything except the front end display
 
