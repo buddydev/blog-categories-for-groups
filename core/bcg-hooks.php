@@ -78,7 +78,6 @@ function bcg_fix_permalink( $post_link, $id, $leavename ) {
 	return $post_link;
 }
 
-//todo ix term link too
 //on Blog category pages fix the category link to point to internal, may cause troubles in some case
 add_filter( 'category_link', 'bcg_fix_category_permalink', 10, 2 );
 

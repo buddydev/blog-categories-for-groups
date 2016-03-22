@@ -287,7 +287,6 @@ function bcg_get_allowed_no_of_posts( $user_id = false ) {
 }
 
 /**
- * @todo need to fix this
  * @param bool $post_id
  * @param string $label_ac
  * @param string $label_de
@@ -443,4 +442,17 @@ function bcg_get_delete_link( $id = 0, $label = 'Delete' ) {
 
 	return "<a href='{$url}' class='confirm' >{$label}</a>";
 
+}
+
+function bcg_get_total_published_posts( $user_id = false ) {
+
+	if ( ! $user_id ) {
+		$user_id = get_current_user_id ();
+	}
+	//Needs revisist
+	global $wpdb;
+
+	$count = $wpdb->get_var( $wpdb->prepare( "SELECT count('*') FROM {$wpdb->posts} WHERE  post_author=%d AND post_type=%s AND post_status='publish'", $user_id,  bcg_get_posttype() ) );
+
+	return intval( $count);
 }
