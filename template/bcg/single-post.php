@@ -14,6 +14,14 @@
             <p><?php printf( __( 'by %s', 'bcg' ), bp_core_get_userlink( $post->post_author ) ) ?></p>
         </div>
         <div class="post-content">
+	        <?php if ( function_exists( 'has_post_thumbnail' ) && has_post_thumbnail( get_the_ID() ) ):?>
+
+		        <div class="post-featured-image">
+			        <?php  the_post_thumbnail();?>
+		        </div>
+
+	        <?php endif;?>
+	        
             <h2 class="posttitle"><a href="<?php echo bcg_get_post_permalink($post);?>" rel="bookmark" title="<?php _e( 'Permanent Link to', 'bcg' ) ?> <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
             <p class="date"><?php the_time() ?> <em><?php _e( 'in', 'bcg' ) ?> <?php the_category(', ') ?> <?php printf( __( 'by %s', 'bcg' ), bp_core_get_userlink( $post->post_author ) ) ?></em></p>
             <div class="entry">
