@@ -2,10 +2,10 @@
 
 /*
  * Plugin Name: Blog Categories for Groups
- * Author: Brajesh Singh
+ * Author: BuddyDev
  * Plugin URI: http://buddydev.com/plugins/blog-categories-for-groups/
- * Author URI: http://buddydev.com/members/sbrajesh/
- * Description: Allow Group admins;/mods to associate blog categories with groups
+ * Author URI: http://buddydev.com/
+ * Description: Allow group members blog with BuddyPress
  * Version: 1.2.3
  * License: GPL
  *
