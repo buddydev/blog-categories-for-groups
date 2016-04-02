@@ -37,7 +37,7 @@ function bcg_is_home() {
 function bcg_is_single_post() {
 	$bp = buddypress();
 
-	if ( bcg_is_component() && ! empty( $bp->action_variables[0] ) && ( ! in_array( $bp->action_variables[0], array( 'create', 'page', 'edit', bcg_get_taxonomy() ) ) ) ) {
+	if ( bcg_is_component() && ! empty( $bp->action_variables[0] ) && ( ! in_array( $bp->action_variables[0], array( 'create', 'page', 'edit', bcg_get_taxonomies() ) ) ) ) {
 		return true;
 	}
 	return false;
@@ -66,7 +66,7 @@ function bcg_is_post_create() {
 function bcg_is_category () {
 	$bp = buddypress();
 
-	if ( bcg_is_component() && !empty( $bp->action_variables[1] ) && $bp->action_variables[0] == bcg_get_taxonomy() ) {
+	if ( bcg_is_component() && !empty( $bp->action_variables[1] ) && $bp->action_variables[0] == in_array( bcg_get_taxonomies() ) ) {
 		return true;
 	}
 }
@@ -103,19 +103,22 @@ function bcg_is_disabled( $group_id ) {
 	return apply_filters( 'bcg_is_disabled', intval( $is_disabled ), $group_id );
 }
 
-function bcg_get_taxonomy() {
+function bcg_get_taxonomies() {
 
-	return apply_filters( 'bcg_get_taxonomy', 'category' );
+	$taxonomy = ( bcg_get_option( 'allowed_taxonomies' ) ) ? bcg_get_option( 'allowed_taxonomies' ) :  'category';
+	return apply_filters( 'bcg_get_taxonomy', (array)$taxonomy );
 }
 
 function bcg_get_post_type() {
 
-	return apply_filters( 'bcg_get_post_type', 'post' );
+	$post_type  = ( bcg_get_option('post_type') ) ? bcg_get_option('post_type') : 'post';
+	return apply_filters( 'bcg_get_post_type', $post_type );
 }
 
 function bcg_get_all_terms() {
 
-	$cats = get_terms( bcg_get_taxonomy(), array( 'fields' => 'all', 'get' => 'all' ) );
+	$taxonomy =   bcg_get_taxonomies();
+	$cats = get_terms( $taxonomy, array( 'fields' => 'all', 'get' => 'all' ) );
 	return $cats;
 }
 
@@ -210,15 +213,6 @@ function bcg_get_settings() {
 	return bp_get_option( 'bcg-settings', $default );
 }
 
-/**
- * Get allowed taxonomies
- *
- * @return type
- */
-function bcg_get_taxonomies() {
-
-	return apply_filters( 'bcg_get_taxonomies', bcg_get_option( 'allowed_taxonomies' ) );
-}
 
 function bcg_get_group_post_status( $user_id ) {
 

@@ -81,7 +81,7 @@ function bcg_posts_pagination_count( $q ) {
 	
 	$total = bp_core_number_format( $numposts );
 
-	//$taxonomy = get_taxonomy( bcg_get_taxonomy() );
+	//$taxonomy = get_taxonomy( bcg_get_taxonomies() );
 	$post_type_object = get_post_type_object( bcg_get_post_type() );
 
 	printf( __( 'Viewing %1s %2$s to %3$s (of %4$s )', 'bcg' ), $post_type_object->labels->name, $from_num, $to_num, $total ) . "&nbsp;";
@@ -109,9 +109,15 @@ function bcg_admin_form() {
 	$group_id = bp_get_group_id();
 
 	$selected_cats = bcg_get_categories( $group_id );
-	$taxonomy = get_taxonomy( bcg_get_taxonomy() );
-	
-	echo "<p>" . sprintf( __( "Check a %s to assopciate the posts in this %s with this group.", "bcg" ), $taxonomy->labels->singular_name, $taxonomy->labels->singular_name ) . "</p>";
+
+	#$allowed_taxonomies = bcg_get_option( 'allowed_taxonomies' );
+
+	#$mytax =  ( $allowed_taxonomies ) ? $allowed_taxonomies : bcg_get_taxonomies();
+
+	//$taxonomy = get_object_taxonomies( (object)$mytax  );
+
+	//echo "<p>" . sprintf( __( "Check a %s to assopciate the posts in this %s with this group.", "bcg" ), $taxonomy->labels->singular_name, $taxonomy->labels->singular_name ) . "</p>";
+	echo "<p>" . sprintf( __( "Select Categories", "bcg" ) ) . "</p>";
 
 	$cats = bcg_get_all_terms();
 	

@@ -201,7 +201,7 @@ class BCG_Actions {
 		if ( bcg_get_option( 'enable_taxonomy' ) ) {
 
 			$taxonomies = array();
-			$tax = bcg_get_option( 'allowed_taxonomies' );
+			$tax = bcg_get_taxonomies();
 
 			if ( ! empty( $tax ) ) {
 
@@ -214,18 +214,24 @@ class BCG_Actions {
 						'view_type'		=> 'checkbox',//currently only checkbox
 					);
 
+
+					if ( bp_is_group() ) {
+						$taxonomies[$tax_name]['include'] = bcg_get_categories( bp_get_current_group_id() );
+					}
+
 				}
 			}
+
 
 			if ( ! empty( $taxonomies ) ) {
 				$settings['tax'] = $taxonomies;
 			}
 
 		}
+
 	   //use it to add extra fields or filter the post type etc
 
 		$settings = apply_filters( 'bcg_form_args', $settings );
-
 		bp_new_simple_blog_post_form( 'bcg_form',  $settings );
 
 	}

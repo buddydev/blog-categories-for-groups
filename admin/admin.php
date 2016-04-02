@@ -50,7 +50,7 @@ class BCGroups_Admin {
 		$default_post_type = bcg_get_posttype()? bcg_get_posttype() : 'post';
 
 		$taxonomies = get_object_taxonomies( $default_post_type );
-		
+	    
 		if ( isset( $taxonomies['post_format'] ) ) {
 			unset( $taxonomies['post_format'] );
 		}
@@ -236,7 +236,7 @@ class BCGroups_Admin {
     }
 
     public function admin_menu() {
-        add_options_page( __( 'BCG Settings', 'blog-categories-for-groups' ), __( 'BCG Settings', 'blog-categories-for-groups' ), 'manage_options', 'blog-categories-for-groups', array( $this->page, 'render' ) );
+        add_options_page( __( 'Blog Category Settings', 'blog-categories-for-groups' ), __( 'Blog Category Settings', 'blog-categories-for-groups' ), 'manage_options', 'blog-categories-for-groups', array( $this->page, 'render' ) );
     }
 
     

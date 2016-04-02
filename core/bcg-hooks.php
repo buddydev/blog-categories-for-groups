@@ -90,8 +90,9 @@ function bcg_fix_category_permalink ( $catlink, $category_id ) {
 	$permalink = trailingslashit( bcg_get_home_url() );
 	//$cat       =  get_category( $category_id );
 	//think about the cat permalink, do we need it or not?
-
-	return $permalink . bcg_get_taxonomy() . '/' . $category_id; //no need for category_name
+        //@todo 
+///we need to work on this
+	return $permalink . bcg_get_taxonomies() . '/' . $category_id; //no need for category_name
 }
 
 add_filter( 'wp_title', 'bcg_fix_page_title', 200, 3 );
@@ -191,9 +192,9 @@ function bcg_register_group_activity_action() {
 	bp_activity_set_action(
 		$bp->groups->id,
 		'new_blog_post',
-		__( 'Group details edited', 'buddypress' ),
+		__( 'Group details edited', 'blog-categories-for-groups' ),
 		'bcg_format_activity_action',
-		__( 'Group Updates', 'buddypress' ),
+		__( 'Group Updates', 'blog-categories-for-groups' ),
 		array( 'activity', 'group', 'member', 'member_groups' )
 	);
 
