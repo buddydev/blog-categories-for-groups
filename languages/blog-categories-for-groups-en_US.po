@@ -1,0 +1,319 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Blog Categories For Groups\n"
+"POT-Creation-Date: 2016-04-03 02:06+0530\n"
+"PO-Revision-Date: 2016-04-03 02:06+0530\n"
+"Last-Translator: BuddyDev.com\n"
+"Language-Team: BuddyDev\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../admin/admin.php:29
+msgid "Settings"
+msgstr ""
+
+#: ../admin/admin.php:29
+msgid "Settings for Blog Category for Groups."
+msgstr ""
+
+#: ../admin/admin.php:46
+msgid "Open"
+msgstr ""
+
+#: ../admin/admin.php:47
+msgid "Closed"
+msgstr ""
+
+#: ../admin/admin.php:68
+msgid "Group Blog Post Type"
+msgstr ""
+
+#: ../admin/admin.php:69
+msgid "Set the post type for group blog."
+msgstr ""
+
+#: ../admin/admin.php:77
+msgid "Allow Upload?"
+msgstr ""
+
+#: ../admin/admin.php:78
+msgid "Want to allow user to upload?"
+msgstr ""
+
+#: ../admin/admin.php:82 ../admin/admin.php:104 ../admin/admin.php:128
+#: ../admin/admin.php:149 ../admin/admin.php:180 ../admin/admin.php:203
+#: ../admin/admin.php:223
+msgid "Yes"
+msgstr ""
+
+#: ../admin/admin.php:83 ../admin/admin.php:105 ../admin/admin.php:129
+#: ../admin/admin.php:150 ../admin/admin.php:181 ../admin/admin.php:204
+#: ../admin/admin.php:224
+msgid "No"
+msgstr ""
+
+#: ../admin/admin.php:90
+msgid "Comment status?"
+msgstr ""
+
+#: ../admin/admin.php:91
+msgid "Do you want to allow commenting on user posts?"
+msgstr ""
+
+#: ../admin/admin.php:99
+msgid "Allow post author to enable/disable comment?"
+msgstr ""
+
+#: ../admin/admin.php:100
+msgid ""
+"If you enable, A user will be able to change the comment status for his/her "
+"post."
+msgstr ""
+
+#: ../admin/admin.php:111
+msgid "Where to redirect after creating/updating post?"
+msgstr ""
+
+#: ../admin/admin.php:112
+msgid ""
+"If you select archive, user will be redirected to the post list, if single, "
+"user will be redirected to single post page if the post is published."
+msgstr ""
+
+#: ../admin/admin.php:116
+msgid "Archive page"
+msgstr ""
+
+#: ../admin/admin.php:117
+msgid "Single post page"
+msgstr ""
+
+#: ../admin/admin.php:123
+msgid "Enable Taxonomy?"
+msgstr ""
+
+#: ../admin/admin.php:124
+msgid ""
+"If you enable, users will be able to select terms from the selected "
+"taxonomies."
+msgstr ""
+
+#: ../admin/admin.php:135
+msgid "Select allowed taxonomies"
+msgstr ""
+
+#: ../admin/admin.php:136
+msgid ""
+"Please check the taxonomies you want users to be able to attach to their "
+"post."
+msgstr ""
+
+#: ../admin/admin.php:144
+msgid "Limit number of posts a user can create?"
+msgstr ""
+
+#: ../admin/admin.php:145
+msgid ""
+"If you enable it, You can control the allowed number of posts from the next "
+"option."
+msgstr ""
+
+#: ../admin/admin.php:156
+msgid "How many posts a user can create?"
+msgstr ""
+
+#: ../admin/admin.php:157
+msgid "Only applies if you have enabled the limit on posts from above option."
+msgstr ""
+
+#: ../admin/admin.php:164
+msgid "Which capability is required for publishing?"
+msgstr ""
+
+#: ../admin/admin.php:168 ../admin/admin.php:192
+msgid "Group Members"
+msgstr ""
+
+#: ../admin/admin.php:169 ../admin/admin.php:193
+msgid "Group Admin"
+msgstr ""
+
+#: ../admin/admin.php:175
+msgid "Allow users to unpublish their own post?"
+msgstr ""
+
+#: ../admin/admin.php:187
+msgid "Who can create post?"
+msgstr ""
+
+#: ../admin/admin.php:188
+msgid ""
+"Option to check what type of User can create post in Group default is group "
+"member."
+msgstr ""
+
+#: ../admin/admin.php:198
+msgid "Allow user to edit their post?"
+msgstr ""
+
+#: ../admin/admin.php:199
+msgid "if you disable it, user will not be able to edit their own post."
+msgstr ""
+
+#: ../admin/admin.php:210
+msgid "Which capability can edit post in backend(WordPress Dashboard)?"
+msgstr ""
+
+#: ../admin/admin.php:211
+msgid ""
+"User with these capabilities will nto be redirected to front end editor for "
+"editing post., user will not be able to edit their own post."
+msgstr ""
+
+#: ../admin/admin.php:218
+msgid "Allow user to delete their post?"
+msgstr ""
+
+#: ../admin/admin.php:219
+msgid "if you disable it, user will not be able to delete their own post."
+msgstr ""
+
+#: ../admin/admin.php:239
+msgid "Blog Category Settings"
+msgstr ""
+
+#: ../admin/options-buddy/fields/image.php:39
+msgid "Remove"
+msgstr ""
+
+#: ../template/bcg/single-post.php:14 ../template/bcg/single-post.php:26
+#: ../template/bcg/posts.php:27 ../template/bcg/posts.php:39
+#, php-format
+msgid "by %s"
+msgstr ""
+
+#: ../template/bcg/single-post.php:25 ../template/bcg/posts.php:37
+msgid "Permanent Link to"
+msgstr ""
+
+#: ../template/bcg/single-post.php:26 ../template/bcg/posts.php:39
+msgid "in"
+msgstr ""
+
+#: ../template/bcg/single-post.php:28
+msgid "Read the rest of this entry &rarr;"
+msgstr ""
+
+#: ../template/bcg/single-post.php:30
+msgid "<p><strong>Pages:</strong> "
+msgstr ""
+
+#: ../template/bcg/single-post.php:33 ../template/bcg/posts.php:50
+msgid "Tags: "
+msgstr ""
+
+#: ../template/bcg/single-post.php:33 ../template/bcg/posts.php:50
+msgid "No Comments &#187;"
+msgstr ""
+
+#: ../template/bcg/single-post.php:33 ../template/bcg/posts.php:50
+msgid "1 Comment &#187;"
+msgstr ""
+
+#: ../template/bcg/single-post.php:33 ../template/bcg/posts.php:50
+msgid "% Comments &#187;"
+msgstr ""
+
+#: ../template/bcg/single-post.php:45 ../template/bcg/posts.php:71
+msgid "This group has no Blog posts."
+msgstr ""
+
+#: ../template/bcg/edit.php:9
+msgid ""
+"Please Install <a href=\"http://buddydev.com/plugins/bp-simple-front-end-"
+"post/\"> BP Simple Front End Post Plugin to make the editing functionality "
+"work."
+msgstr ""
+
+#: ../core/bcg-screens.php:51
+msgid "Blog"
+msgstr ""
+
+#: ../core/template-tags.php:87
+#, php-format
+msgid "Viewing %1s %2$s to %3$s (of %4$s )"
+msgstr ""
+
+#: ../core/template-tags.php:99
+msgid "Posts"
+msgstr ""
+
+#: ../core/template-tags.php:101
+msgid "Create New Post"
+msgstr ""
+
+#: ../core/template-tags.php:116
+msgid "Select Terms"
+msgstr ""
+
+#: ../core/template-tags.php:166
+msgid ""
+"This group has no associated categories. To post to Group blog, you need to "
+"associate some categoris to it."
+msgstr ""
+
+#: ../core/bcg-actions.php:78
+msgid "Post deleted successfully"
+msgstr ""
+
+#: ../core/bcg-actions.php:84
+msgid "You should not perform unauthorized actions"
+msgstr ""
+
+#: ../core/bcg-actions.php:106
+msgid "Post Published"
+msgstr ""
+
+#: ../core/bcg-actions.php:132
+msgid "Post unpublished"
+msgstr ""
+
+#: ../core/bcg-hooks.php:23
+msgid "Disable Blog Categories"
+msgstr ""
+
+#: ../core/bcg-hooks.php:192
+#, php-format
+msgid "%1$s wrote a new post in %2$s, %3$s"
+msgstr ""
+
+#: ../core/bcg-hooks.php:204
+msgid "Group details edited"
+msgstr ""
+
+#: ../core/bcg-hooks.php:206
+msgid "Group Updates"
+msgstr ""
+
+#: ../core/bcg-admin.php:18
+msgid "Blog Categories"
+msgstr ""
+
+#: ../core/bcg-admin.php:52 ../core/bcg-admin.php:91
+msgid "Group Blog Categories settings were successfully updated."
+msgstr ""
+
+#: ../core/bcg-admin.php:70
+msgid "Save Changes"
+msgstr ""
+
+#: ../core/bcg-admin.php:89
+msgid ""
+"There was an error updating Group Blog Categories settings, please try again."
+msgstr ""

@@ -15,7 +15,7 @@ class BCG_Group_Extension extends BP_Group_Extension {
 	public function __construct () {
 
 
-		$this->name = __( 'Blog Categories', 'bcg' );
+		$this->name = __( 'Blog Categories', 'blog-categories-for-groups' );
 		$this->slug = 'blog-categories';
 
 		$this->create_step_position = 21;
@@ -49,7 +49,7 @@ class BCG_Group_Extension extends BP_Group_Extension {
 		if ( ! bcg_update_categories( $group_id, $cats ) ) {
 			
 		} else {
-			bp_core_add_message( __( 'Group Blog Categories settings were successfully updated.', 'bcg' ) );
+			bp_core_add_message( __( 'Group Blog Categories settings were successfully updated.', 'blog-categories-for-groups' ) );
 		}
 	}
 
@@ -67,7 +67,7 @@ class BCG_Group_Extension extends BP_Group_Extension {
 			bcg_admin_form();
 			wp_nonce_field( 'groups_edit_save_' . $this->slug );
 		?>
-		<p><input type="submit" value="<?php _e( 'Save Changes', 'bcg' ) ?> &rarr;" id="save" name="save" /></p>
+		<p><input type="submit" value="<?php _e( 'Save Changes', 'blog-categories-for-groups' ) ?> &rarr;" id="save" name="save" /></p>
 	<?php
 	}
 
@@ -86,9 +86,9 @@ class BCG_Group_Extension extends BP_Group_Extension {
 		$cats = $_POST['blog_cats'];
 
 		if ( ! bcg_update_categories( $group_id, $cats ) ) {
-			bp_core_add_message( __( 'There was an error updating Group Blog Categories settings, please try again.', 'bcg' ), 'error' );
+			bp_core_add_message( __( 'There was an error updating Group Blog Categories settings, please try again.', 'blog-categories-for-groups' ), 'error' );
 		} else {
-			bp_core_add_message( __( 'Group Blog Categories settings were successfully updated.', 'bcg' ) );
+			bp_core_add_message( __( 'Group Blog Categories settings were successfully updated.', 'blog-categories-for-groups' ) );
 		}
 
 		bp_core_redirect( bp_get_group_permalink( $bp->groups->current_group ) . '/admin/' . $this->slug );

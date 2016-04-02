@@ -24,7 +24,7 @@
 	<div class="post" id="post-<?php the_ID(); ?>">
         <div class="author-box">
             <?php echo get_avatar( get_the_author_meta( 'user_email' ), '50' ); ?>
-            <p><?php printf( __( 'by %s', 'bcg' ), bp_core_get_userlink( $post->post_author ) ) ?></p>
+            <p><?php printf( __( 'by %s', 'blog-categories-for-groups' ), bp_core_get_userlink( $post->post_author ) ) ?></p>
         </div>
         <div class="post-content">
 	        <?php if ( function_exists( 'has_post_thumbnail' ) && has_post_thumbnail( get_the_ID() ) ):?>
@@ -34,9 +34,9 @@
 		        </div>
 
 	        <?php endif;?>
-            <h2 class="posttitle"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php _e( 'Permanent Link to', 'bcg' ) ?> <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
+            <h2 class="posttitle"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php _e( 'Permanent Link to', 'blog-categories-for-groups' ) ?> <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
 
-            <p class="date"><?php the_time() ?> <em><?php _e( 'in', 'bcg' ) ?> <?php the_category(', ') ?> <?php printf( __( 'by %s', 'bcg' ), bp_core_get_userlink( $post->post_author ) ) ?></em></p>
+            <p class="date"><?php the_time() ?> <em><?php _e( 'in', 'blog-categories-for-groups' ) ?> <?php the_category(', ') ?> <?php printf( __( 'by %s', 'blog-categories-for-groups' ), bp_core_get_userlink( $post->post_author ) ) ?></em></p>
 
             <div class="entry">
                 <?php the_excerpt( ); ?>
@@ -47,7 +47,7 @@
 		        <?php echo bcg_get_edit_link( $post_id ); ?>
 		        <?php echo bcg_get_delete_link( $post_id ); ?>
 	        </div>
-	        <p class="postmetadata"><span class="tags"><?php the_tags( __( 'Tags: ', 'bcg' ), ', ', '<br />'); ?></span> <span class="comments"><?php comments_popup_link( __( 'No Comments &#187;', 'bcg' ), __( '1 Comment &#187;', 'bcg' ), __( '% Comments &#187;', 'bcg' ) ); ?></span></p>
+	        <p class="postmetadata"><span class="tags"><?php the_tags( __( 'Tags: ', 'blog-categories-for-groups' ), ', ', '<br />'); ?></span> <span class="comments"><?php comments_popup_link( __( 'No Comments &#187;', 'blog-categories-for-groups' ), __( '1 Comment &#187;', 'blog-categories-for-groups' ), __( '% Comments &#187;', 'blog-categories-for-groups' ) ); ?></span></p>
         </div>
     </div>
 	<?php endwhile;?>
@@ -68,7 +68,7 @@
 <?php else: ?>
 
 	<div id="message" class="info">
-		<p><?php _e( 'This group has no Blog posts.', 'bcg' ); ?></p>
+		<p><?php _e( 'This group has no Blog posts.', 'blog-categories-for-groups' ); ?></p>
 	</div>
 
 <?php endif; ?>

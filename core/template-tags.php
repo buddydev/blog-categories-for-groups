@@ -84,7 +84,7 @@ function bcg_posts_pagination_count( $q ) {
 	//$taxonomy = get_taxonomy( bcg_get_taxonomies() );
 	$post_type_object = get_post_type_object( bcg_get_post_type() );
 
-	printf( __( 'Viewing %1s %2$s to %3$s (of %4$s )', 'bcg' ), $post_type_object->labels->name, $from_num, $to_num, $total ) . "&nbsp;";
+	printf( __( 'Viewing %1s %2$s to %3$s (of %4$s )', 'blog-categories-for-groups' ), $post_type_object->labels->name, $from_num, $to_num, $total ) . "&nbsp;";
 	//$term = get_term_name ( $q->query_vars['cat'] );
 	//if( bcg_is_category() )
 	// printf( __( "In the %s %s ","bcg" ), $taxonomy->label, "<span class='bcg-cat-name'>". $term_name ."</span>" );
@@ -96,9 +96,9 @@ function bcg_posts_pagination_count( $q ) {
 //sub menu
 function bcg_get_options_menu() {
 	?>
-	<li <?php if ( bcg_is_home() ): ?> class="current"<?php endif; ?>><a href="<?php echo bcg_get_home_url(); ?>"><?php _e( "Posts", "bcg" ); ?></a></li>
+	<li <?php if ( bcg_is_home() ): ?> class="current"<?php endif; ?>><a href="<?php echo bcg_get_home_url(); ?>"><?php _e( "Posts", "blog-categories-for-groups" ); ?></a></li>
 	<?php if ( bcg_current_user_can_post() ): ?>
-		<li <?php if ( bcg_is_post_create() ): ?> class="current"<?php endif; ?>><a href="<?php echo bcg_get_home_url(); ?>/create"><?php _e( "Create New Post", "bcg" ); ?></a></li>
+		<li <?php if ( bcg_is_post_create() ): ?> class="current"<?php endif; ?>><a href="<?php echo bcg_get_home_url(); ?>/create"><?php _e( "Create New Post", "blog-categories-for-groups" ); ?></a></li>
 	<?php endif; ?>
 	<?php
 }
@@ -163,7 +163,7 @@ function bcg_show_post_form( $group_id ) {
 	$cat_selected = bcg_get_categories( $group_id ); //selected cats
 	
 	if ( empty( $cat_selected ) ) {
-		_e( 'This group has no associated categories. To post to Group blog, you need to associate some categoris to it.', 'bcg' );
+		_e( 'This group has no associated categories. To post to Group blog, you need to associate some categoris to it.', 'blog-categories-for-groups' );
 		return;
 	}
 
