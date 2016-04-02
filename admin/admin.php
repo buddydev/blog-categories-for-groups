@@ -47,7 +47,7 @@ class BCGroups_Admin {
 			'close'	=> __( 'Closed', 'blog-categories-for-groups' )
 		);
 		
-		$default_post_type = bcg_get_posttype()? bcg_get_posttype() : 'post';
+		$default_post_type = bcg_get_post_type();
 
 		$taxonomies = get_object_taxonomies( $default_post_type );
 	    

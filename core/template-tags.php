@@ -110,48 +110,51 @@ function bcg_admin_form() {
 
 	$selected_cats = bcg_get_categories( $group_id );
 
-	#$allowed_taxonomies = bcg_get_option( 'allowed_taxonomies' );
+	$allowed_taxonomies = bcg_get_taxonomies();
+	$terms = bcg_get_all_terms();
 
-	#$mytax =  ( $allowed_taxonomies ) ? $allowed_taxonomies : bcg_get_taxonomies();
+	echo "<p>" . sprintf( __( "Select Terms", "blog-categories-for-groups" ) ) . "</p>";
+	foreach ( $allowed_taxonomies as $taxonomy ) {
 
-	//$taxonomy = get_object_taxonomies( (object)$mytax  );
+		$tax = get_taxonomy( $taxonomy );
+		_bcg_list_tax_terms( $tax, $terms, $selected_cats );
 
-	//echo "<p>" . sprintf( __( "Check a %s to assopciate the posts in this %s with this group.", "bcg" ), $taxonomy->labels->singular_name, $taxonomy->labels->singular_name ) . "</p>";
-	echo "<p>" . sprintf( __( "Select Categories", "bcg" ) ) . "</p>";
-
-	$cats = bcg_get_all_terms();
-	
-	if ( is_array( $cats ) ) {////it is sure but do not take risk
-		foreach ( $cats as $cat ) {//show the form
-			$checked = 0;
-			
-			if ( ! empty( $selected_cats ) && in_array( $cat->term_id, $selected_cats ) ) {
-				$checked = true;
-			}
-			?>
-			<label  style="padding:5px;display:block;float:left;">
-				<input type="checkbox" name="blog_cats[]" id="<?php $opt_id; ?>" value="<?php echo $cat->term_id; ?>" <?php if ( $checked ) echo "checked='checked'"; ?>/>
-			<?php echo $cat->name; ?>
-			</label>
-
-			<?php
-		}
-		
-	} else {
-		
-		?>
-
-		<div class="error">
-			<p><?php _e( "Please create the categories first to attach them to a group.", "bcg" ); ?></p>
-		</div>
-		<?php
 	}
+
+
 	?>
 	<div class="clear"></div>
 
 	<?php
 }
 
+function _bcg_list_tax_terms( $tax, $terms, $selected_terms ) {
+
+
+	echo "<div class='bcg-editable-terms-list clearfix'>";
+	echo "<label class='bcg-taxonomy-name'>{$tax->labels->singular_name}</label>";
+	foreach ( $terms as $term ) {//show the form
+		//the back compat is killing the quality
+		if ( $tax->name != $term->taxonomy ) {
+			continue;
+		}
+
+		$checked = 0;
+
+		if ( ! empty( $selected_terms ) && in_array( $term->term_id, $selected_terms ) ) {
+			$checked = true;
+		}
+		?>
+		<label  style="padding:5px;display:block;float:left;">
+			<input type="checkbox" name="blog_cats[]"  value="<?php echo $term->term_id; ?>" <?php if ( $checked ) echo "checked='checked'"; ?> />
+			<?php echo $term->name; ?>
+		</label>
+
+		<?php
+	}
+	echo "<div style='clear:both;'></div>";
+	echo "</div>";
+}
 //post form if one quick pot is installed
 function bcg_show_post_form( $group_id ) {
 	

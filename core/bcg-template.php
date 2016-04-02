@@ -51,7 +51,6 @@ function bcg_get_query (){
 	
 	$qs ['paged'] = $paged;
 
-
 	return apply_filters( "bcg_get_query", $qs );
 }
 

@@ -87,12 +87,21 @@ function bcg_fix_category_permalink ( $catlink, $category_id ) {
 		return $catlink;
 	}
 
+	$term = get_term($category_id);
+	$allowed_taxonomies = bcg_get_taxonomies();
+
+	if ( ! in_array( $term->taxonomy, $allowed_taxonomies ) ) {
+		return $catlink;
+	}
+	//it is our taxonomy
+
+
 	$permalink = trailingslashit( bcg_get_home_url() );
 	//$cat       =  get_category( $category_id );
 	//think about the cat permalink, do we need it or not?
-        //@todo 
-///we need to work on this
-	return $permalink . bcg_get_taxonomies() . '/' . $category_id; //no need for category_name
+
+	///we need to work on this
+	return $permalink . $term->taxonomy . '/' . $category_id; //no need for category_name
 }
 
 add_filter( 'wp_title', 'bcg_fix_page_title', 200, 3 );
