@@ -31,7 +31,7 @@ class BCG_Group_Extension extends BP_Group_Extension {
 			return false;
 		}
 
-		bcg_admin_form();
+		bcg_admin_form( $group_id );
 
 		wp_nonce_field( 'groups_create_save_' . $this->slug );
 	}
@@ -64,7 +64,8 @@ class BCG_Group_Extension extends BP_Group_Extension {
 		<h2><?php echo esc_attr( $this->name ) ?></h2>
 		
 		<?php
-			bcg_admin_form();
+
+			bcg_admin_form( $group_id );
 			wp_nonce_field( 'groups_edit_save_' . $this->slug );
 		?>
 		<p><input type="submit" value="<?php _e( 'Save Changes', 'blog-categories-for-groups' ) ?> &rarr;" id="save" name="save" /></p>

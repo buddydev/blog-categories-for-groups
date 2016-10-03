@@ -104,11 +104,9 @@ function bcg_get_options_menu() {
 }
 
 //form for showing category lists
-function bcg_admin_form() {
-	
-	$group_id = bp_get_group_id();
+function bcg_admin_form( $group_id ) {
 
-	$selected_cats = bcg_get_categories( $group_id );
+	$selected_cats = ( $group_id ) ? bcg_get_categories( $group_id ) : 0;
 
 	$allowed_taxonomies = bcg_get_taxonomies();
 	$terms = bcg_get_all_terms();
@@ -132,7 +130,7 @@ function _bcg_list_tax_terms( $tax, $terms, $selected_terms ) {
 
 
 	echo "<div class='bcg-editable-terms-list clearfix'>";
-	echo "<label class='bcg-taxonomy-name'>{$tax->labels->singular_name}</label>";
+	//echo "<label class='bcg-taxonomy-name'>{$tax->labels->singular_name}</label>";
 	foreach ( $terms as $term ) {//show the form
 		//the back compat is killing the quality
 		if ( $tax->name != $term->taxonomy ) {
