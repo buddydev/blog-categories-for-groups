@@ -169,6 +169,8 @@ function bcg_format_activity_action( $action, $activity  ) {
 
 	//$user_name = bp_core_get_user_displayname( $activity->user_id );
 
+	$post_url = '';
+	
 	if ( isset( $activity->post_url ) ) {
 		$post_url = $activity->post_url;
 	}
