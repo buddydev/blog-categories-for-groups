@@ -127,7 +127,7 @@ function bcg_fix_page_title( $title, $sep, $seplocation ) {
 }
 
 
-add_filter( 'bp_activity_get_activity_id', 'bcg_update_group_post_activity', 0, 2);
+//add_filter( 'bp_activity_get_activity_id', 'bcg_update_group_post_activity', 0, 2);
 function bcg_update_group_post_activity( $id, $args ) {
 
 
