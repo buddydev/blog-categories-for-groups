@@ -17,15 +17,12 @@ class BCG_Actions {
         /**
          * Register form for new/edit resume
          */
-        if ( is_admin() ) {
-            return;
-		}
-        
         add_action( 'bp_init', array( $this, 'register_form' ), 7 );
         add_action( 'bp_actions', array( $this, 'publish' ) );
         add_action( 'bp_actions', array( $this, 'unpublish' ) );
         add_action( 'bp_actions', array( $this, 'delete' ) );
         add_action( 'bp_after_activity_add_parse_args', array( $this, 'update_activity_args' ) );
+        add_action( 'bp_after_activity_add_parse_args', array( $this, 'update_activity_args_on_publish' ) );
 		//add_action( 'bp_blogs_format_activity_action_new_blog_post', array( $this, 'format_activity_action' ), 10, 2  );
 	   // add_filter( 'bp_get_activity_action', array( $this, 'update_activity_action' ) );
 
@@ -248,6 +245,27 @@ class BCG_Actions {
 
 		$args['component']          = 'groups';
 		$args['item_id']            = absint( $_REQUEST['custom_fields']['_bcg_group_id'] );
+
+		return $args;
+	}
+
+	public function update_activity_args_on_publish( $args ) {
+
+
+		if ( $args['component'] !== 'blogs' || $args['type'] !== 'new_blog_post' ) {
+			return $args;
+		}
+		// It must be post publish. let us check for the post meta.
+		// check if this was saved via BCG
+		$post_id = $args['secondary_item_id'];
+		$group_id = get_post_meta( $post_id, '_bcg_group_id', true );
+
+		if ( ! $group_id ) {
+			return ;
+		}
+
+		$args['component']          = 'groups';
+		$args['item_id']            = absint( $group_id );
 
 		return $args;
 	}
