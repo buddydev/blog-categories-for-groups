@@ -128,8 +128,8 @@ class BCGroups_Helper {
 			'allowed_taxonomies'	=> 1,
 			'enable_category'		=> 1,
 			'enable_tags'			=> 1,
-			'show_posts_on_profile' => false,
-			'limit_no_of_posts'		=> false,
+			'show_posts_on_profile' => 0,
+			'limit_no_of_posts'		=> 0,
 			'max_allowed_posts'		=> 20,
 			'publish_cap'			=> 'read',
 			'allow_unpublishing'	=> 1,
@@ -138,12 +138,12 @@ class BCGroups_Helper {
 			'allow_delete'			=> 1,
 			//'enabled_tags'		=> 1,
 			'taxonomies'		    => array( 'category' ),
-			'allow_upload'		    => false,
-			'max_upload_count'	    => 2
+			'allow_upload'		    => 0,
+			'max_upload_count'	    => 2,
 		);
 
 		if ( ! get_option( 'bcg-settings' ) ) {
-			add_option( 'bcg-settings', $default  );
+			add_option( 'bcg-settings', $default );
 		}
 
 	}
