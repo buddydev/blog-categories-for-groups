@@ -325,7 +325,7 @@ function bcg_get_total_published_posts( $user_id = false ) {
 	//Needs revisist
 	global $wpdb;
 
-	$count = $wpdb->get_var( $wpdb->prepare( "SELECT count('*') FROM {$wpdb->posts} WHERE  post_author=%d AND post_type=%s AND post_status='publish'", $user_id,  bcg_get_posttype() ) );
+	$count = $wpdb->get_var( $wpdb->prepare( "SELECT count('*') FROM {$wpdb->posts} WHERE  post_author=%d AND post_type=%s AND post_status='publish'", $user_id,  bcg_get_post_type() ) );
 
 	return intval( $count);
 }
