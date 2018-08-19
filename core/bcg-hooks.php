@@ -170,9 +170,9 @@ function bcg_format_activity_action( $action, $activity  ) {
 	//$user_name = bp_core_get_user_displayname( $activity->user_id );
 
 	$post_url = '';
-	
-	if ( isset( $activity->post_url ) ) {
-		$post_url = $activity->post_url;
+
+	if ( isset( $activity->primary_link ) ) {
+		$post_url = $activity->primary_link;
 	}
 
 	$post_title = bp_activity_get_meta( $activity->id, 'post_title' );
@@ -185,7 +185,7 @@ function bcg_format_activity_action( $action, $activity  ) {
 		$post_title = esc_html__( $post_title, 'blog-categories-for-groups' );
 	}
 
-	$group = groups_get_group( array( 'group_id' => $activity->item_id ) );
+	$group = groups_get_group( $activity->item_id );
 	$group_permalink = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug;
 
 	$post_link  = '<a href="' . esc_url( $post_url ) . '">' . $post_title . '</a>';
