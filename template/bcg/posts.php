@@ -1,5 +1,5 @@
 	<?php
-	/*
+	/**
 	This page is used for group blog home page/categories archives*/
 	?>
 	<?php $q = new WP_Query( bcg_get_query() );?>
@@ -18,8 +18,8 @@
 	<?php do_action( 'bp_before_group_blog_list' ) ?>
 <?php
 	global $post;
-	bcg_loop_start();//please do not remove it
-	while( $q->have_posts() ):$q->the_post();
+	bcg_loop_start();// please do not remove it.
+	while( $q->have_posts() ) : $q->the_post();
  ?>
 	<div class="post" id="post-<?php the_ID(); ?>">
         <div class="author-box">
@@ -65,7 +65,7 @@
 		</div>
 	</div>
 
-<?php else: ?>
+<?php else : ?>
 
 	<div id="message" class="info">
 		<p><?php _e( 'This group has no blog posts.', 'blog-categories-for-groups' ); ?></p>

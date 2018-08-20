@@ -1,6 +1,5 @@
 <?php
-
-/*
+/**
  * Plugin Name: Blog Categories for Groups
  * Author: BuddyDev
  * Plugin URI: http://buddydev.com/plugins/blog-categories-for-groups/
@@ -8,14 +7,14 @@
  * Description: Allow group members blog with BuddyPress
  * Version: 1.2.4
  * License: GPL
- *
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit( 0 );
 }
 
-//Component slug used in url, can be overridden in bp-custom.php
+// Component slug used in url,
+// can be overridden in bp-custom.php.
 if ( ! defined( 'BCG_SLUG' ) ) {
 	define( 'BCG_SLUG', 'blog' );
 }
@@ -28,34 +27,54 @@ define( 'BCG_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
  */
 class BCGroups_Helper {
 
+	/**
+	 * Singleton instance.
+	 *
+	 * @var BCGroups_Helper
+	 */
 	private static $instance = null;
 
+	/**
+	 * Path to plugin dir.
+	 *
+	 * @var string
+	 */
 	private $path;
+
+	/**
+	 * Url to plugin dir.
+	 *
+	 * @var string
+	 */
 	private $url;
-	
-	
+
+
+	/**
+	 * BCGroups_Helper constructor.
+	 */
 	private function __construct() {
-		
+
 		$this->path = plugin_dir_path( __FILE__ );
-		$this->url = plugin_dir_url( __FILE__ );
-		
+		$this->url  = plugin_dir_url( __FILE__ );
+
 		$this->setup_hooks();
-		
+
 	}
+
 	/**
 	 * Singleton factory method
-	 * 
-	 * @return type
+	 *
+	 * @return BCGroups_Helper
 	 */
 	public static function get_instance() {
-		
+
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
-		
+
 		return self::$instance;
 	}
-	
+
 	/**
 	 * Setup basic hooks
 	 */
@@ -64,9 +83,9 @@ class BCGroups_Helper {
 		register_activation_hook( __FILE__, array( $this, 'install' ) );
 
 		add_action( 'bp_include', array( $this, 'load_extension' ) );
-		//load javascript for comment reply
+		// load javascript for comment reply.
 		add_action( 'bp_enqueue_scripts', array( $this, 'enqueue_script' ) );
-		//load localization files
+		// load localization files.
 		add_action( 'bp_init', array( $this, 'load_textdomain' ), 2 );
 
 	}
@@ -75,7 +94,7 @@ class BCGroups_Helper {
 	 * Load required files
 	 */
 	public function load_extension() {
-		
+
 		$files = array(
 			'core/bcg-functions.php',
 			'core/template-tags.php',
@@ -89,7 +108,7 @@ class BCGroups_Helper {
 		);
 
 		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
-			$files[] =  'admin/admin.php';
+			$files[] = 'admin/admin.php';
 		}
 
 		foreach ( $files as $file ) {
@@ -102,44 +121,47 @@ class BCGroups_Helper {
 	 * e.g /languages/blog-categories-for-groups-en_US.mo
 	 */
 	public function load_textdomain() {
-		
+
 		load_plugin_textdomain( 'blog-categories-for-groups', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	}
 
 	/**
 	 * Enqueue comment js on single post screen
 	 */
-	public function enqueue_script () {
-		
+	public function enqueue_script() {
+
 		if ( bcg_is_single_post() ) {
 			wp_enqueue_script( 'comment-reply' );
 		}
 	}
 
+	/**
+	 * Add settings on activation.
+	 */
 	public function install() {
 
 		$default = array(
-			'post_type'				=> 'post',
-			'post_status'			=> 'publish',
-			'comment_status'		=> 'open',
-			'show_comment_option'	=> 1,
-			'custom_field_title'	=> '',
-			'enable_taxonomy'		=> 1,
-			'allowed_taxonomies'	=> 1,
-			'enable_category'		=> 1,
-			'enable_tags'			=> 1,
+			'post_type'             => 'post',
+			'post_status'           => 'publish',
+			'comment_status'        => 'open',
+			'show_comment_option'   => 1,
+			'custom_field_title'    => '',
+			'enable_taxonomy'       => 1,
+			'allowed_taxonomies'    => 1,
+			'enable_category'       => 1,
+			'enable_tags'           => 1,
 			'show_posts_on_profile' => 0,
-			'limit_no_of_posts'		=> 0,
-			'max_allowed_posts'		=> 20,
-			'publish_cap'			=> 'read',
-			'allow_unpublishing'	=> 1,
-			'post_cap'				=> 'read',
-			'allow_edit'			=> 1,
-			'allow_delete'			=> 1,
+			'limit_no_of_posts'     => 0,
+			'max_allowed_posts'     => 20,
+			'publish_cap'           => 'members',
+			'allow_unpublishing'    => 1,
+			'post_cap'              => 'members',
+			'allow_edit'            => 1,
+			'allow_delete'          => 1,
 			//'enabled_tags'		=> 1,
-			'taxonomies'		    => array( 'category' ),
-			'allow_upload'		    => 0,
-			'max_upload_count'	    => 2,
+			'taxonomies'            => array( 'category' ),
+			'allow_upload'          => 0,
+			'max_upload_count'      => 2,
 		);
 
 		if ( ! get_option( 'bcg-settings' ) ) {
@@ -148,8 +170,8 @@ class BCGroups_Helper {
 
 	}
 
-	
+
 }
 
-//initialize
+// initialize.
 BCGroups_Helper::get_instance();
