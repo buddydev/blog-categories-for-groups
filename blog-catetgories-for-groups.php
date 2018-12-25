@@ -95,6 +95,11 @@ class BCGroups_Helper {
 	 */
 	public function load_extension() {
 
+		// make sure the Front end simple post plugin and BuddyPress group module is active.
+		if ( ! function_exists( 'bp_new_simple_blog_post_form' ) || ! bp_is_active( 'groups' ) ) {
+			return;
+		}
+
 		$files = array(
 			'core/bcg-functions.php',
 			'core/template-tags.php',
