@@ -53,12 +53,10 @@ class BCGroups_Helper {
 	 * BCGroups_Helper constructor.
 	 */
 	private function __construct() {
-
 		$this->path = plugin_dir_path( __FILE__ );
 		$this->url  = plugin_dir_url( __FILE__ );
 
 		$this->setup_hooks();
-
 	}
 
 	/**
@@ -79,7 +77,6 @@ class BCGroups_Helper {
 	 * Setup basic hooks
 	 */
 	private function setup_hooks() {
-
 		register_activation_hook( __FILE__, array( $this, 'install' ) );
 
 		add_action( 'bp_include', array( $this, 'load_extension' ) );
@@ -87,7 +84,6 @@ class BCGroups_Helper {
 		add_action( 'bp_enqueue_scripts', array( $this, 'enqueue_script' ) );
 		// load localization files.
 		add_action( 'bp_init', array( $this, 'load_textdomain' ), 2 );
-
 	}
 
 	/**
@@ -126,7 +122,6 @@ class BCGroups_Helper {
 	 * e.g /languages/blog-categories-for-groups-en_US.mo
 	 */
 	public function load_textdomain() {
-
 		load_plugin_textdomain( 'blog-categories-for-groups', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	}
 
@@ -144,7 +139,6 @@ class BCGroups_Helper {
 	 * Add settings on activation.
 	 */
 	public function install() {
-
 		$default = array(
 			'post_type'             => 'post',
 			'post_status'           => 'publish',
@@ -172,10 +166,7 @@ class BCGroups_Helper {
 		if ( ! get_option( 'bcg-settings' ) ) {
 			add_option( 'bcg-settings', $default );
 		}
-
 	}
-
-
 }
 
 // initialize.
