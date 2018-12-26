@@ -91,8 +91,7 @@ class BCGroups_Helper {
 	 */
 	public function load_extension() {
 
-		// make sure the Front end simple post plugin and BuddyPress group module is active.
-		if ( ! function_exists( 'bp_new_simple_blog_post_form' ) || ! bp_is_active( 'groups' ) ) {
+		if ( ! $this->need_loading() ) {
 			return;
 		}
 
@@ -130,6 +129,10 @@ class BCGroups_Helper {
 	 */
 	public function enqueue_script() {
 
+		if ( ! $this->need_loading() ) {
+			return;
+		}
+
 		if ( bcg_is_single_post() ) {
 			wp_enqueue_script( 'comment-reply' );
 		}
@@ -166,6 +169,21 @@ class BCGroups_Helper {
 		if ( ! get_option( 'bcg-settings' ) ) {
 			add_option( 'bcg-settings', $default );
 		}
+	}
+
+	/**
+	 * Need loading or not
+	 * make sure the Front end simple post plugin and BuddyPress group module is active.
+	 *
+	 * @return bool
+	 */
+	private function need_loading() {
+
+		if ( ! function_exists( 'bp_new_simple_blog_post_form' ) || ! bp_is_active( 'groups' ) ) {
+			return false;
+		}
+
+		return true;
 	}
 }
 
