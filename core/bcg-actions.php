@@ -176,6 +176,11 @@ class BCG_Actions {
 	 */
 	public function register_form() {
 
+		// Only register if simple front end post is active.
+		if ( ! function_exists( 'bp_new_simple_blog_post_form' ) ) {
+			return;
+		}
+
 		$user_id     = get_current_user_id();
 		$post_status = bcg_get_group_post_status( $user_id );
 		$group_id    = bp_get_current_group_id();
