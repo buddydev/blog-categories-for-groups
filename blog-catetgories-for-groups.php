@@ -5,7 +5,7 @@
  * Plugin URI: http://buddydev.com/plugins/blog-categories-for-groups/
  * Author URI: http://buddydev.com/
  * Description: Allow group members blog with BuddyPress
- * Version: 1.2.6
+ * Version: 1.2.7
  * License: GPL
  */
 
