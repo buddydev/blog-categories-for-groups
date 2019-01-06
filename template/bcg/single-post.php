@@ -21,7 +21,7 @@
 
 	        <?php endif;?>
 
-            <h2 class="posttitle"><a href="<?php echo bcg_get_post_permalink($post);?>" rel="bookmark" title="<?php _e( 'Permanent Link to', 'blog-categories-for-groups' ) ?> <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
+            <h2 class="posttitle"><a href="<?php the_permalink();?>" rel="bookmark" title="<?php _e( 'Permanent Link to', 'blog-categories-for-groups' ) ?> <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
             <p class="date"><?php the_time() ?> <em><?php _e( 'in', 'blog-categories-for-groups' ) ?> <?php the_category(', ') ?> <?php printf( __( 'by %s', 'blog-categories-for-groups' ), bp_core_get_userlink( $post->post_author ) ) ?></em></p>
             <div class="entry">
                 <?php the_content( __( 'Read the rest of this entry &rarr;', 'blog-categories-for-groups' ) ); ?>

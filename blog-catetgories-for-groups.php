@@ -165,6 +165,7 @@ class BCGroups_Helper {
 			'allow_upload'           => 0,
 			'max_upload_count'       => 2,
 			'allow_group_tab_toggle' => 1, // allow group admins to toggle tab.
+			'group_based_permalink'  => 1, // Group based permalink or normal permalink.
 		);
 
 		if ( ! get_option( 'bcg-settings' ) ) {

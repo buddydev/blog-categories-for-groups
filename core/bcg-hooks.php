@@ -94,7 +94,7 @@ if ( bcg_get_post_type() == 'post' ) {
  */
 function bcg_fix_permalink( $post_link, $id, $leavename ) {
 
-	if ( ! bcg_is_component() || ! in_bcg_loop() ) {
+	if ( ! bcg_is_component() || ! in_bcg_loop() || ! bcg_get_option( 'group_based_permalink' ) ) {
 		return $post_link;
 	}
 
