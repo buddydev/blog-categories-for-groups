@@ -91,11 +91,7 @@ class BCG_Group_Extension extends BP_Group_Extension {
 			bp_core_redirect( trailingslashit( bp_get_groups_directory_permalink() . 'create/step/' . bp_get_groups_current_create_step() ) );
 		}
 
-		if ( ! bcg_update_categories( $group_id, $cats ) ) {
-			bp_core_add_message( __( 'There was an issue with term selection. Please try again.', 'blog-categories-for-groups' ), 'error' );
-		} else {
-			//bp_core_add_message( __( 'Group Blog Categories settings were successfully updated.', 'blog-categories-for-groups' ) );
-		}
+		bcg_update_categories( $group_id, $cats );
 	}
 
 	/**
@@ -111,15 +107,14 @@ class BCG_Group_Extension extends BP_Group_Extension {
 
 		?>
 
-        <h2><?php echo esc_attr( $this->name ) ?></h2>
+        <h2><?php echo esc_attr( $this->name ); ?></h2>
 
 		<?php
 
 		bcg_admin_form( $group_id );
 		wp_nonce_field( 'groups_edit_save_' . $this->slug );
 		?>
-        <p><input type="submit" value="<?php _e( 'Save Changes', 'blog-categories-for-groups' ) ?> &rarr;" id="save"
-                  name="save"/></p>
+        <p><input type="submit" value="<?php _e( 'Save Changes', 'blog-categories-for-groups' ) ?> &rarr;" id="save" name="save"/></p>
 		<?php
 	}
 
@@ -140,13 +135,16 @@ class BCG_Group_Extension extends BP_Group_Extension {
 
 		$group_id = $bp->groups->current_group->id;
 
-		$cats = $_POST['blog_cats'];
+		$cats = isset( $_POST['blog_cats'] ) ? $_POST['blog_cats'] : array();
 
-		if ( ! bcg_update_categories( $group_id, $cats ) ) {
-			bp_core_add_message( __( 'There was an error updating Group Blog Categories settings, please try again.', 'blog-categories-for-groups' ), 'error' );
-		} else {
-			bp_core_add_message( __( 'Group Blog Categories settings were successfully updated.', 'blog-categories-for-groups' ) );
+		if ( empty( $cats ) ) {
+			// redirect to the last step.
+			bp_core_add_message( __( 'Please select some terms.', 'blog-categories-for-groups' ), 'error' );
+			bp_core_redirect( bp_get_group_permalink( $bp->groups->current_group ) . '/admin/' . $this->slug );
 		}
+
+		bcg_update_categories( $group_id, $cats );
+		bp_core_add_message( __( 'Group Blog Categories settings were successfully updated.', 'blog-categories-for-groups' ) );
 
 		bp_core_redirect( bp_get_group_permalink( $bp->groups->current_group ) . '/admin/' . $this->slug );
 	}
