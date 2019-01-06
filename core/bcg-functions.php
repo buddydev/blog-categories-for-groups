@@ -28,28 +28,29 @@ function bcg_get_option( $option_name ) {
 function bcg_get_options() {
 	$default = array(
 
-		'post_type'             => 'post',
-		'post_status'           => 'publish',
-		'comment_status'        => 'open',
-		'show_comment_option'   => 1,
-		'custom_field_title'    => '',
-		'enable_taxonomy'       => 1,
-		'allowed_taxonomies'    => 1,
-		'enable_category'       => 1,
-		'enable_tags'           => 1,
-		'show_posts_on_profile' => 0,
-		'limit_no_of_posts'     => 0,
-		'max_allowed_posts'     => 20,
-		'publish_cap'           => 'read',
-		'allow_unpublishing'    => 1, // subscriber //see https://codex.wordpress.org/Roles_and_Capabilities.
-		'post_cap'              => 'read',
-		'allow_edit'            => 1,
-		'allow_delete'          => 1,
-		'allow_upload'          => 0,
+		'post_type'              => 'post',
+		'post_status'            => 'publish',
+		'comment_status'         => 'open',
+		'show_comment_option'    => 1,
+		'custom_field_title'     => '',
+		'enable_taxonomy'        => 1,
+		'allowed_taxonomies'     => 1,
+		'enable_category'        => 1,
+		'enable_tags'            => 1,
+		'show_posts_on_profile'  => 0,
+		'limit_no_of_posts'      => 0,
+		'max_allowed_posts'      => 20,
+		'publish_cap'            => 'read',
+		'allow_unpublishing'     => 1, // subscriber //see https://codex.wordpress.org/Roles_and_Capabilities.
+		'post_cap'               => 'read',
+		'allow_edit'             => 1,
+		'allow_delete'           => 1,
+		'allow_upload'           => 0,
 		//'enabled_tags'			=> 1,
-		'taxonomies'            => array( 'category' ),
-		'max_upload_count'      => 2,
-		'post_update_redirect'  => 'archive',
+		'taxonomies'             => array( 'category' ),
+		'max_upload_count'       => 2,
+		'post_update_redirect'   => 'archive',
+		'allow_group_tab_toggle' => 1, // allow group admin to toggle tab.
 	);
 
 	return bp_get_option( 'bcg-settings', $default );

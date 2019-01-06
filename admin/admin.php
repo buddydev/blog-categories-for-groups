@@ -181,6 +181,17 @@ class BCGroups_Admin {
 					),
 				),
 				array(
+					'name'    => 'allow_group_tab_toggle',
+					'label'   => __( 'Allow group admin to dissable blog tab?', 'blog-categories-for-groups' ),
+					'desc'    => '',
+					'type'    => 'radio',
+					'default' => 1,
+					'options' => array(
+						1 => __( 'Yes', 'blog-categories-for-groups' ),
+						0 => __( 'No', 'blog-categories-for-groups' ),
+					),
+				),
+                array(
 					'name'    => 'allow_unpublishing',
 					'label'   => __( 'Allow users to unpublish their own post?', 'blog-categories-for-groups' ),
 					'desc'    => '',

@@ -19,6 +19,9 @@ add_action( 'groups_update_group', 'bcg_save_group_prefs' );
  * Add settings checkbox to allow/disallow group blog.
  */
 function bcg_group_disable_form() {
+	if ( ! bcg_get_option( 'allow_group_tab_toggle' ) ) {
+		return;
+	}
 	?>
     <div class="checkbox">
         <label><input type="checkbox" name="group-disable-bcg" id="group-disable-bcg"
