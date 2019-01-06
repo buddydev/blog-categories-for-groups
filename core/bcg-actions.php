@@ -81,7 +81,7 @@ class BCG_Actions {
 		if ( bcg_user_can_delete( $post_id, get_current_user_id(), $group_id ) ) {
 
 			wp_delete_post( $post_id, true );
-			bp_core_add_message( __( 'Post deleted successfully' ), 'blog-categories-for-groups' );
+			bp_core_add_message( __( 'Post deleted successfully', 'blog-categories-for-groups' ) );
 			// redirect.
 			wp_redirect( bcg_get_home_url() );// hardcoding bad.
 			exit( 0 );

@@ -26,14 +26,14 @@ class BCG_Group_Extension extends BP_Group_Extension {
 	 *
 	 * @var bool
 	 */
-	public $enable_create_step = true; // enable create step
+	public $enable_create_step = true; // enable create step.
 
 	/**
 	 * Show in group menu?
 	 *
 	 * @var bool
 	 */
-	public $enable_nav_item = false; //do not show in front end
+	public $enable_nav_item = false; // do not show in front end.
 
 	/**
 	 * Show on manage screen?
@@ -83,12 +83,18 @@ class BCG_Group_Extension extends BP_Group_Extension {
 
 		$group_id = $bp->groups->new_group_id;
 
-		$cats = $_POST['blog_cats'];
+		$cats = isset( $_POST['blog_cats'] ) ? $_POST['blog_cats'] : array();
+
+		if ( empty( $cats ) ) {
+			// redirect to the last step.
+			bp_core_add_message( __( 'Please select some terms.', 'blog-categories-for-groups' ), 'error' );
+			bp_core_redirect( trailingslashit( bp_get_groups_directory_permalink() . 'create/step/' . bp_get_groups_current_create_step() ) );
+		}
 
 		if ( ! bcg_update_categories( $group_id, $cats ) ) {
-
+			bp_core_add_message( __( 'There was an issue with term selection. Please try again.', 'blog-categories-for-groups' ), 'error' );
 		} else {
-			bp_core_add_message( __( 'Group Blog Categories settings were successfully updated.', 'blog-categories-for-groups' ) );
+			//bp_core_add_message( __( 'Group Blog Categories settings were successfully updated.', 'blog-categories-for-groups' ) );
 		}
 	}
 

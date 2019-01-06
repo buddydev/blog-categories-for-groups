@@ -103,7 +103,7 @@ class BCGroups_Helper {
 			'core/bcg-actions.php',
 			'core/bcg-screens.php',
 			'core/bcg-template.php',
-			'core/bcg-admin.php',
+			'core/class-bcg-group-extension.php',
 			'core/filters.php',
 		);
 
