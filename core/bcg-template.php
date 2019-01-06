@@ -27,15 +27,15 @@ function bcg_load_template( $template ) {
 function bcg_get_query() {
 
 	$bp = buddypress();
-
-	$terms = bcg_get_categories( $bp->groups->current_group->id );
+	$group_id = $bp->groups->current_group->id;
+	$terms = bcg_get_categories( $group_id );
 
 	$qs = array(
 		'post_type'   => bcg_get_post_type(),
 		'post_status' => 'publish',
 	);
 
-	if ( is_super_admin() || groups_is_user_admin( get_current_user_id(), $bp->groups->current_group->id ) ) {
+	if ( is_super_admin() || groups_is_user_admin( get_current_user_id(), $group_id ) ) {
 		$qs['post_status'] = 'any';
 	}
 	if ( empty( $terms ) ) {
@@ -57,8 +57,15 @@ function bcg_get_query() {
 
 	$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 
-	$qs ['paged'] = $paged;
-
+	$qs ['paged']     = $paged;
+	$qs['meta_query'] = array(
+		array(
+			'key'     => '_bcg_group_id',
+			'value'   => $group_id,
+			'compare' => '=',
+			'type'    => 'NUMERIC',
+		),
+	);
 	return apply_filters( 'bcg_get_query', $qs );
 }
 
