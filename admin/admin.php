@@ -236,6 +236,17 @@ class BCGroups_Admin {
 					),
 				),
 				array(
+					'name'    => 'disable_dashboard_edit',
+					'label'   => __( 'Disable group blog post edit link leading to dashboard?', 'blog-categories-for-groups' ),
+					'desc'    => __( "If disabled, edit links on the group blog page screen won't link to wp-admin post editing screen even if the user has dashboard editing capability.", 'blog-categories-for-groups' ),
+					'type'    => 'select',
+					'default' => 1,
+					'options' => array(
+						1 => __( 'Yes', 'blog-categories-for-groups' ),
+						0 => __( 'No', 'blog-categories-for-groups' ),
+					),
+				),
+				array(
 					'name'    => 'dashboard_edit_cap',
 					'label'   => __( 'Which capability can edit post in backend(WordPress Dashboard)?', 'blog-categories-for-groups' ),
 					'desc'    => __( 'User with these capabilities will nto be redirected to front end editor for editing post., user will not be able to edit their own post.', 'blog-categories-for-groups' ),

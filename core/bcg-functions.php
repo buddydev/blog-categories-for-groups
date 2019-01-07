@@ -52,6 +52,7 @@ function bcg_get_options() {
 		'post_update_redirect'   => 'archive',
 		'allow_group_tab_toggle' => 1, // allow group admin to toggle tab.
 		'group_based_permalink'  => 1, // Group based permalink or normal permalink.
+		'disable_dashboard_edit' => 1, // disable editing in dashboard.
 	);
 
 	return bp_get_option( 'bcg-settings', $default );
@@ -419,7 +420,7 @@ function bcg_get_home_url( $group_id = null ) {
 		$group = groups_get_current_group();
 	}
 
-	return apply_filters( 'bcg_home_url', bp_get_group_permalink( $group ) . BCG_SLUG );
+	return apply_filters( 'bcg_home_url', trailingslashit( bp_get_group_permalink( $group ) . BCG_SLUG ) );
 }
 
 /**
@@ -487,9 +488,9 @@ function bcg_get_post_publish_unpublish_url( $post_id = 0 ) {
 		$url = bcg_get_home_url();
 
 		if ( bcg_is_post_published( $post_id ) ) {
-			$url = $url . '/unpublish/' . $post_id . '/';
+			$url = $url . 'unpublish/' . $post_id . '/';
 		} else {
-			$url = $url . '/publish/' . $post_id . '/';
+			$url = $url . 'publish/' . $post_id . '/';
 		}
 	}
 
@@ -528,14 +529,14 @@ function bcg_get_edit_url( $post_id = 0 ) {
 
 	$action_name = 'edit';
 
-	if ( current_user_can( bcg_get_option( 'dashboard_edit_cap' ) ) ) {
+	if ( ! bcg_get_option( 'disable_dashboard_edit' ) && current_user_can( bcg_get_option( 'dashboard_edit_cap' ) ) ) {
 		return get_edit_post_link( $post );
 	}
 
 	$url = bcg_get_home_url();
 
 	// if we are here, we can allow user to edit the post.
-	return $url . "/{$action_name}/" . $post->ID . '/';
+	return $url . "{$action_name}/" . $post->ID . '/';
 }
 
 /**
@@ -579,7 +580,7 @@ function bcg_get_delete_link( $id = 0, $label = 'Delete' ) {
 	$post        = get_post( $id );
 	$action_name = 'delete';
 	$url         = bcg_get_home_url();
-	$url         = $url . "/{$action_name}/" . $post->ID . '/';
+	$url         = $url . "{$action_name}/" . $post->ID . '/';
 
 	return "<a href='{$url}' class='confirm' >{$label}</a>";
 }

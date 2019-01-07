@@ -125,7 +125,7 @@ function bcg_fix_category_permalink( $catlink, $category_id ) {
 	}
 
 	// it is our taxonomy.
-	$permalink = trailingslashit( bcg_get_home_url() );
+	$permalink = bcg_get_home_url();
 	// $cat       =  get_category( $category_id );
 	// think about the cat permalink, do we need it or not?
 	// we need to work on this.
