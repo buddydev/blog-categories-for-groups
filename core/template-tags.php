@@ -109,12 +109,9 @@ function bcg_posts_pagination_count( $q ) {
  */
 function bcg_get_options_menu() {
 	?>
-    <li <?php if ( bcg_is_home() ): ?> class="current"<?php endif; ?>><a
-                href="<?php echo bcg_get_home_url(); ?>"><?php _e( "Posts", "blog-categories-for-groups" ); ?></a></li>
-	<?php if ( bcg_current_user_can_post() ): ?>
-        <li <?php if ( bcg_is_post_create() ): ?> class="current"<?php endif; ?>><a
-                    href="<?php echo bcg_get_home_url(); ?>/create"><?php _e( "Create New Post", "blog-categories-for-groups" ); ?></a>
-        </li>
+    <li <?php if ( bcg_is_home() ) : ?> class="current"<?php endif; ?>><a href="<?php echo bcg_get_home_url(); ?>"><?php _e( "Posts", "blog-categories-for-groups" ); ?></a></li>
+	<?php if ( bcg_current_user_can_post() ) : ?>
+        <li <?php if ( bcg_is_post_create() ) : ?> class="current"<?php endif; ?>><a href="<?php echo bcg_get_home_url(); ?>/create"><?php _e( "Create New Post", "blog-categories-for-groups" ); ?></a></li>
 	<?php endif; ?>
 	<?php
 }
