@@ -310,6 +310,21 @@ function _bcg_sync_group_terms( $group_id, $cats ) {
 }
 
 /**
+ * Get a lit of group ids this term is associated with.
+ *
+ * @param int $term_id term id.
+ *
+ * @return array
+ */
+function bcg_get_term_group_ids( $term_id ) {
+	global $wpdb;
+	$table = buddypress()->groups->table_name_groupmeta;
+
+	return $wpdb->get_col( $wpdb->prepare( "SELECT group_id FROM {$table} WHERE meta_key = %s AND meta_value = %s", '_bcg_term_id', $term_id ) );
+
+}
+
+/**
  * Get a post by slug name
  *
  * @param string $slug slug.
