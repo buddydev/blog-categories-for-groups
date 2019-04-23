@@ -31,6 +31,8 @@ class BCG_Actions {
 		add_action( 'bp_after_activity_add_parse_args', array( $this, 'update_activity_args_on_publish' ) );
 		//add_action( 'bp_blogs_format_activity_action_new_blog_post', array( $this, 'format_activity_action' ), 10, 2  );
 		// add_filter( 'bp_get_activity_action', array( $this, 'update_activity_action' ) );
+
+		add_action( 'bp_activity_post_type_published', array( $this, 'on_activity_publish' ), 10, 3 );
 	}
 
 	/**
@@ -292,6 +294,61 @@ class BCG_Actions {
 		$args['item_id']   = absint( $group_id );
 
 		return $args;
+	}
+
+	/**
+	 * On activity publish
+	 *
+	 * @param int     $activity_id Activity id.
+	 * @param WP_Post $post Post object.
+	 * @param array   $activity_args Activity args
+	 */
+	public function on_activity_publish( $activity_id, $post, $activity_args ) {
+
+		if ( $post->post_type != bcg_get_post_type() ) {
+			return;
+		}
+
+		$term_ids = array();
+		foreach ( bcg_get_taxonomies() as $taxonomy ) {
+			$categories = wp_get_post_terms( $post->ID, $taxonomy, array( 'fields' => 'ids' ) );
+
+			if ( empty( $categories ) || is_wp_error( $categories ) ) {
+				break;
+			}
+
+			$term_ids = array_merge( $term_ids, $categories );
+		}
+
+		$term_ids = array_unique( $term_ids );
+
+		if ( empty( $term_ids ) ) {
+			return;
+		}
+
+		$term_group_id = 0;
+		foreach ( $term_ids as $term_id ) {
+			$group_ids = bcg_get_term_group_ids( $term_id );
+
+			if ( ! empty( $group_ids ) ) {
+				$term_group_id = current( $group_ids );
+				break;
+			}
+		}
+
+		if ( empty( $term_group_id ) ) {
+			return;
+		}
+
+		//update_post_meta( $post->ID, '_bcg_group_id', $term_group_id );
+		$args = wp_parse_args( array(
+			'id'                => $activity_id,
+			'component'         => 'groups',
+			'item_id'           => $term_group_id,
+			'secondary_item_id' => $post->ID,
+		), $activity_args );
+
+		bp_activity_add( $args );
 	}
 
 	/**

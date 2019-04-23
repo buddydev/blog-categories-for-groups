@@ -82,7 +82,7 @@ function bcg_posts_pagination_count( $q ) {
 
 	$numposts = $q->found_posts;
 	$max_page = $q->max_num_pages;
-
+http://localhost/bp/4.0/dev/groups
 	if ( empty( $paged ) || $paged == 0 ) {
 		$paged = 1;
 	}

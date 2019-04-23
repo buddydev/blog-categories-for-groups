@@ -29,3 +29,23 @@ function bcg_get_editable_post_id( $id ) {
 }
 
 add_filter( 'bpsp_editable_post_id', 'bcg_get_editable_post_id' );
+
+/**
+ * Modify recorded post types
+ *
+ * @param array $post_types post_types Array.
+ *
+ * @return array
+ */
+function bcg_modify_recorded_post_types( $post_types ) {
+	$bcg_post_type = bcg_get_post_type();
+
+	if ( in_array( $bcg_post_type, $post_types ) ) {
+		return $post_types;
+	}
+
+	$post_types[] = $bcg_post_type;
+
+	return $post_types;
+}
+add_filter( 'bp_blogs_record_post_post_types', 'bcg_modify_recorded_post_types' );
