@@ -261,9 +261,52 @@ function bcg_get_categories( $group_id ) {
  */
 function bcg_update_categories( $group_id, $cats ) {
 
-	$cats = maybe_serialize( $cats );
+	$terms = maybe_serialize( $cats );
+	// save serialized array. keeping it for backward compatibility.
+	$updated = groups_update_groupmeta( $group_id, 'group_blog_cats', $terms );
 
-	return groups_update_groupmeta( $group_id, 'group_blog_cats', $cats );
+	// save individual terms in group meta.
+	_bcg_sync_group_terms( $group_id, $cats );
+
+	return $updated;
+}
+
+/**
+ * Sync term ids in group meta.
+ *
+ * @param int   $group_id group id.
+ * @param array $cats category ids.
+ */
+function _bcg_sync_group_terms( $group_id, $cats ) {
+
+	$cats = wp_parse_id_list( $cats );
+
+	if ( empty( $cats ) ) {
+		groups_delete_groupmeta( $group_id, '_bcg_term_id', '' );
+
+		return;
+	}
+	$list = '(' . join( ',', $cats ) . ')';
+
+	// step 1. Delete all group meta with key '_bcg_term_id' where value is not in $cats;
+	global $wpdb;
+	$table = buddypress()->groups->table_name_groupmeta;
+	$wpdb->query( $wpdb->prepare( "DELETE FROM {$table} WHERE group_id = %d AND meta_key = %s AND meta_value NOT IN {$list}", $group_id, '_bcg_term_id' ) );
+
+	// step 2. save each entry in $cats to '_bcg_term_id'.
+
+	$existing_ids = $wpdb->get_col( $wpdb->prepare( "SELECT meta_value FROM {$table} where group_id = %d AND meta_key= %s AND meta_value IN {$list}", $group_id, '_bcg_term_id'));
+
+	$new_ids = array_diff( $cats, $existing_ids );
+	if ( empty( $new_ids ) ) {
+		return;
+	}
+
+
+	foreach ( $new_ids as $cat_id ) {
+		groups_add_groupmeta( $group_id, '_bcg_term_id', $cat_id );
+	}
+
 }
 
 /**
