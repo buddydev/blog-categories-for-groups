@@ -314,7 +314,7 @@ class BCG_Actions {
 			$categories = wp_get_post_terms( $post->ID, $taxonomy, array( 'fields' => 'ids' ) );
 
 			if ( empty( $categories ) || is_wp_error( $categories ) ) {
-				break;
+				continue;
 			}
 
 			$term_ids = array_merge( $term_ids, $categories );
