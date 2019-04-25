@@ -151,6 +151,17 @@ class BCGroups_Admin {
 					'options' => $tax,
 				),
 				array(
+					'name'    => 'show_non_group_posts',
+					'label'   => __( 'In the group post list, Include posts which were not published from group?', 'blog-categories-for-groups' ),
+					'desc'    => __( 'If "yes" is selected, all the posts from associated taxonomy terms will be listed. If "No" is selected, only post published from group screen will be listed.', 'blog-categories-for-groups' ),
+					'type'    => 'radio',
+					'default' => 0,
+					'options' => array(
+						1 => __( 'Yes', 'blog-categories-for-groups' ),
+						0 => __( 'No', 'blog-categories-for-groups' ),
+					),
+				),
+				array(
 					'name'    => 'limit_no_of_posts',
 					'label'   => __( 'Limit number of posts a user can create?', 'blog-categories-for-groups' ),
 					'desc'    => __( 'If you enable it, You can control the allowed number of posts from the next option.', 'blog-categories-for-groups' ),

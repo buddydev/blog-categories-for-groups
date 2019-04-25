@@ -57,15 +57,19 @@ function bcg_get_query() {
 
 	$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 
-	$qs ['paged']     = $paged;
-	$qs['meta_query'] = array(
-		array(
-			'key'     => '_bcg_group_id',
-			'value'   => $group_id,
-			'compare' => '=',
-			'type'    => 'NUMERIC',
-		),
-	);
+	$qs ['paged'] = $paged;
+	// Restrict posts to the group from where it was posted.
+	if ( ! bcg_get_option( 'show_non_group_posts' ) ) {
+		$qs['meta_query'] = array(
+			array(
+				'key'     => '_bcg_group_id',
+				'value'   => $group_id,
+				'compare' => '=',
+				'type'    => 'NUMERIC',
+			),
+		);
+	}
+
 	return apply_filters( 'bcg_get_query', $qs );
 }
 

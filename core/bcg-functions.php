@@ -53,6 +53,7 @@ function bcg_get_options() {
 		'allow_group_tab_toggle' => 1, // allow group admin to toggle tab.
 		'group_based_permalink'  => 1, // Group based permalink or normal permalink.
 		'disable_dashboard_edit' => 1, // disable editing in dashboard.
+		'show_non_group_posts'   => 0,
 	);
 
 	return bp_get_option( 'bcg-settings', $default );
